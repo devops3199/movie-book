@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Login = (props) => {
     return (
-        <h3>로그인</h3>
+        <h3>로그인 수정</h3>
     );
 };
 
