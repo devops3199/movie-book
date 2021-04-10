@@ -1,5 +1,5 @@
-import Login from './Login';
-import Register from './Register';
-import Main from './Main';
+import Login from 'pages/Login';
+import Register from 'pages/Register';
+import Main from 'pages/Main';
 
 export { Login, Register, Main };
