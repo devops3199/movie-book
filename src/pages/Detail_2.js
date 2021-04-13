@@ -14,18 +14,17 @@ const Detail = (props) => {
         <Wrap>
           <MovieImg></MovieImg>
           <TitleBox>
-            <Title>자산어보</Title>
-            <Info1>
-              <Y>2020</Y>
-              <RunTime>1시간 57분</RunTime>
-            </Info1>
-            <Limit>15세이상관람가</Limit>
+            <Title>익스트랙션</Title>
             <StarBox>
               <StarOne><FontAwesomeIcon icon={faStar} /></StarOne>
               <StarNum>5.0</StarNum>
             </StarBox>
           </TitleBox>
-          
+          <Info1>
+            <Y>2020</Y>
+            <RunTime>1시간 57분</RunTime>
+            <Limit>15세이상관람가</Limit>
+          </Info1>
           <Info2>
             어떤 일에도 쉽게 동요하지 않는 냉철한 용병. 그가 살아남기 위해 자신을 끊임없이 성찰한다. 
             마약왕에게 납치된 아들을 구하러 간 방글라데시에서 그 모든 것이 시작됐다.
@@ -39,7 +38,7 @@ const Detail = (props) => {
           <ReviewBox>
             <ReStarBox>
               <Star/>
-              <WritingBtn>작성</WritingBtn>
+              <WritingBtn>글작성</WritingBtn>
             </ReStarBox>
             <ReWriting>
               <P placeholder="댓글을 남겨주세요">
@@ -72,12 +71,12 @@ const MovieImg = styled.div`
   height: 410px;
   display: inline-block;
   margin: 0 auto 25px;
-  // border: 1px solid #fff;
+  // border-radius: 4px;
   
   overflow: hidden;
   object-fit: contain;
   background-image: url("https://movie-phinf.pstatic.net/20210331_104/1617166166627wzUHH_JPEG/movie_image.jpg");
-  background-size: 285px;
+  background-size: 720px;
   background-repeat: no-repeat;
   background-position: center;
   box-sizing: border-box;
@@ -87,14 +86,13 @@ const TitleBox = styled.div`
   margin: 0;
   padding: 0;
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Title = styled.h1`
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-weight: 700;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   display: inline-block;
   height: 61px;
@@ -102,11 +100,9 @@ const Title = styled.h1`
 
 const StarBox = styled.div`
   display: flex;
-  height: 26px;
-  margin: 26px 0 54px;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 14px;
+  gap: 12px;
 `;
 
 const StarOne = styled.div`
@@ -127,7 +123,7 @@ const StarNum = styled.div`
 `;
 
 const Info1 = styled.div`
-  margin: 12px auto 0;
+  margin: 12px 0 0;
   padding: 0;
   display: flex;
   justify-content: flex-start;
@@ -136,14 +132,14 @@ const Info1 = styled.div`
 `;
 
 const Y = styled.p`
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   font-weight: 700;
   margin: 0;
   padding: 0;
 `;
 
 const RunTime = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   margin: 0;
   padding: 0;
@@ -152,13 +148,13 @@ const RunTime = styled.p`
 const Limit = styled.p`
   font-size: 1rem;
   font-weight: 700;
-  margin: 8px 0 0;
+  margin: 0;
   padding: 0;
 `;
 
 const Info2 = styled.p`
   font-size: 1rem;
-  margin: 0;
+  margin: 12px 0;
   padding: 0;
 `;
 
@@ -232,11 +228,11 @@ const WritingBtn = styled.button`
   border: 1px solid #ff5974;
   border-radius: 3px;
   color: #fff;
-  width: 70px;
+  width: 100px;
   height: 30px;
   margin: 0;
   padding: 0 0 1.5px 0;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
   outline: none;

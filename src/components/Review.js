@@ -12,7 +12,16 @@ const Review = (props) => {
     <React.Fragment>
       <ReviewBox>
         <ReStarBox>
-          <Star/>
+          <Box>
+            <Stars>
+              <FontAwesomeIcon icon={faStar} />
+              <FontAwesomeIcon icon={faStar} />
+              <FontAwesomeIcon icon={faStar} />
+              <FontAwesomeIcon icon={faStar} />
+              <FontAwesomeIcon icon={faStar} />
+            </Stars>
+            <Num>5</Num>
+          </Box>
         </ReStarBox>
         <ReWriting>
           <P>시리즈 중 최고였던거 같아요;;; 극장가서 보길 잘한듯 ㄹㅇ 존잼임ㅋㅋ 님들아 꼭 나믿고 포디로 보셔라
@@ -27,6 +36,34 @@ const Review = (props) => {
     </React.Fragment>
   )
 }
+
+const Box = styled.div`
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+`;
+
+const Stars = styled.div`
+  margin: 9px 0 0;
+  padding: 0;
+  color: #ee3a57;
+  font-size: 1rem;
+  display: flex;
+  gap: 3px;
+`;
+
+const Num = styled.div`
+  margin: 2.2px 0 0;
+  padding: 0;
+  height: 30px;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: inline-flex;
+`;
 
 const ReviewBox = styled.div`
   margin: 0;

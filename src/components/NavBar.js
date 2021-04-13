@@ -25,7 +25,7 @@ const Navbar = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1350px;
+    max-width: 1400px;
     height: 70px;
     margin: 0 auto;
 `;

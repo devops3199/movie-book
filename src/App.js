@@ -21,13 +21,16 @@ const App = (props) => {
           <Route path="/detail" exact component={Detail} />
         </ConnectedRouter>
       </Container>
+      <Footer>
+
+      </Footer>
     </>
   );
 }
 
 const Container = styled.div`
   margin: 0 auto;
-  max-width: 1350px;
+  max-width: 1400px;
   height: 100%;
 `;
 
@@ -36,6 +39,12 @@ const Header = styled.header`
   top: 0;
   width: 100%;
   background-color: #1a1f3f;
+  z-index: 10;
+`;
+
+const Footer = styled.footer`
+  width: 100%;
+  height: 300px;
 `;
 
 export default App;
