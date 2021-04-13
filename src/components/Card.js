@@ -32,17 +32,24 @@ const CardContainer = styled.div`
     height: ${(props) => props.height};
     ${(props) => (props.padding ? `padding: ${props.padding};` : '')};
     cursor: pointer;
-    background: url(https://img.hankyung.com/photo/202011/BF.24364787.1.jpg) no-repeat top;
+    background: url(https://img.hankyung.com/photo/202011/BF.24364787.1.jpg) no-repeat center;
     background-size: cover;
+    border-radius: 10px;
+
+    @media only screen and (max-width: 1300px) {
+        width: ${(props) => (props.name === 'main' ? '20rem;' : '10rem')};
+        height: ${(props) => (props.name === 'main' ? '30rem;' : ' ')};
+    }
 `;
 
 const Rank = styled.div`
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 6px;
+    left: 6px;
     width: ${(props) => (props.name === 'main' ? '50px;' : '25px;')};
     height: ${(props) => (props.name === 'main' ? '50px;' : '25px;')};
     background-color: #ee3a57;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -56,9 +63,11 @@ const Rank = styled.div`
 const TitleBackground = styled.div`
     position: absolute;
     bottom: -10%;
-    height: 20%;
+    height: 15%;
     width: 100%;
     background-color: rgba(57, 50, 50, .85);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     opacity: 0;
     display: flex;
     align-items: center;
@@ -69,6 +78,10 @@ const TitleBackground = styled.div`
         font-size: ${(props) => (props.name === 'main' ? '2.5rem;' : '1.1rem;')};
         font-weight: 700;
         margin: 0 1rem;
+
+        @media only screen and (max-width: 1300px) {
+            font-size: ${(props) => (props.name === 'main' ? '1.1rem;' : '.7rem;')};
+        }
     }
 
     ${CardContainer}:hover &{

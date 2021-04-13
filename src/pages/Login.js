@@ -41,9 +41,7 @@ const Login = (props) => {
         </IconSpan>
         <LoginInput type="password" placeholder="Password" ></LoginInput>
       </LoginBox>
-      
-      <LoginButton >로그인</LoginButton>
-
+      <LoginButton>로그인</LoginButton>
       <SignupBox>
         <SignupLink onClick={() => history.push('/register')} >회원가입</SignupLink>
       </SignupBox>

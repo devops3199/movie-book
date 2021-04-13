@@ -15,7 +15,7 @@ const Main = (props) => {
                 {today_list.map((val, index) => {
                     if(index === 0){
                         return (
-                            <Card name='main' width='33.5rem' height='33.5rem' rank={index+1}></Card>
+                            <Card name='main' width='33.5rem' height='50rem' rank={index+1}></Card>
                         );
                     }
                     return (
@@ -39,6 +39,7 @@ const Main = (props) => {
 
 const Title = styled.div`
     width: 100%;
+    margin-top: 3rem;
 `;
 
 const MainContainer = styled.div`
@@ -53,7 +54,11 @@ const CardContainer = styled.div`
         'main sub1 sub2 sub3'
         'main sub4 sub5 sub6';
     grid-gap: 1rem;
-    margin-bottom: 50px;
+    margin: 0 auto 50px auto;
+
+    @media only screen and (max-width: 1300px) {
+        width: 90%;
+    }
 `;
 
 
