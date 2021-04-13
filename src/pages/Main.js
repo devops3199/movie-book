@@ -4,32 +4,35 @@ import Carousel from 'components/Carousel';
 import Card from 'components/Card';
 
 const Main = (props) => {
+    const today_list = new Array(7).fill(0);
+    const today_user = ['abc123', 'xyz333', 'hezzs', 'dazy'];
     return (
         <MainContainer>
             <Title>
                 <h3>오늘의 영화</h3>
             </Title>
             <CardContainer>
-                <Left>
-                    <Card width='500px' height='500px'></Card>
-                </Left>
-                <Right>
-                    <Card width='230px' height='230px' margin='0 1rem 1rem 0'></Card>
-                    <Card width='230px' height='230px' margin='0 1rem 1rem 0'></Card>
-                    <Card width='230px' height='230px' margin='0 1rem 1rem 0'></Card>
-                    <Card width='230px' height='230px' margin='0 1rem 1rem 0'></Card>
-                    <Card width='230px' height='230px' margin='0 1rem 1rem 0'></Card>
-                    <Card width='230px' height='230px' margin='0 1rem 1rem 0'></Card>
-                </Right>
+                {today_list.map((val, index) => {
+                    if(index === 0){
+                        return (
+                            <Card name='main' width='33.5rem' height='33.5rem' rank={index+1}></Card>
+                        );
+                    }
+                    return (
+                        <Card name={`sub${index}`} width='15.625rem' rank={index+1}></Card>
+                    );
+                })}
             </CardContainer>
-            <Title>
-                <h3>홍길동님의 영화 리스트</h3>
-            </Title>
-            <Carousel />
-            <Title>
-                <h3>김철수님의 영화 리스트</h3>
-            </Title>
-            <Carousel />
+            {today_user.map((val, index) => {
+                return(
+                    <>
+                        <Title key={index}>
+                            <h3>{val}님의 영화 리스트</h3>
+                        </Title>
+                        <Carousel />
+                    </>
+                );
+            })}
         </MainContainer>
     );
 };
@@ -45,18 +48,12 @@ const MainContainer = styled.div`
 
 const CardContainer = styled.div`
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-`;
-
-const Left = styled.div`
-    margin-right: 20px;
-`;
-
-const Right = styled.div`
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-areas:
+        'main sub1 sub2 sub3'
+        'main sub4 sub5 sub6';
+    grid-gap: 1rem;
+    margin-bottom: 50px;
 `;
 
 
