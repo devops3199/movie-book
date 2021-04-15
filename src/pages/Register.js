@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { history } from 'redux/configureStore';
+import { useDispatch } from 'react-redux';
+import { idCheck, pwMacth, pwContinuous, emailCheck } from 'shared/common';
 
 import { faEye as farEye } from '@fortawesome/free-regular-svg-icons'
 import { faEyeSlash as farEyeSlash } from '@fortawesome/free-regular-svg-icons'
@@ -19,6 +21,141 @@ const Register = (props) => {
       setShow2(show2? false : true);
   };
 
+
+  const [email, setEmail] = React.useState('');
+  const [emailDup, setEmailDup] = React.useState(false);
+  const [userName, setUserName] = React.useState('');
+  const [pw, setPw] = React.useState('');
+  const [pwCheck, setPwCheck] = React.useState('');
+
+  const signUp = () => {
+    if (email === '') {
+      alert('이메일을 입력해주세요.');
+      return false;
+    }
+
+    if (userName === '') {
+      alert('이름을(를) 입력해주세요.');
+      return false;
+    }
+
+    if (emailDup === false) {
+      alert('이메일 중복확인을 해주세요.');
+      return false;
+    }
+
+    // dispatch(userActions.signupAPI(id,pw,userName,email,address));
+  }
+
+  const checkEmailAPI = (email) => {
+    
+    const API = `~~/${email}`;
+    fetch(API).then((response) => response.json())
+      .then((result) => {
+        
+        if (result === false) {
+          document.querySelector('.emailCheck_3').style.display = 'block';
+          console.log('이미 등록된 이메일입니다. 다시 작성해 주십시오!');
+          setEmailDup(false);
+
+        } else {
+          document.querySelector('.emailCheck_4').style.display = 'none';
+          console.log('사용이 가능한 이메일입니다.');
+          setEmailDup(true);
+        }
+      });
+  }
+
+  // const checkPw = () => {
+  //   // 특수문자 / 문자 / 숫자 포함 형태의 8~15자리 이내의 암호 정규식
+  //   let passRule = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+    
+  //   if(!passRule.test)
+  // }
+
+  const emailInfo = useRef();
+  const usernameInfo = useRef();
+  const pwInfo = useRef();
+  const pwCheckInfo = useRef();
+  const [messageEmail, setMessageEmail] = React.useState('');
+  const [messageUsername, setMessageUsername] = React.useState('');
+  const [messagePw, setMessagePw] = React.useState('');
+  const [messagePwCheck, setMessagePwCheck] = React.useState('');
+
+  const checkEm = () => {
+    if (email === '') {
+      setMessageEmail('·이메일을 입력해주세요.');
+      emailInfo.current.style.display = 'block';
+      console.log('이메일을 입력해주세요.');
+      return;
+    } else {
+      emailInfo.current.style.display = 'none';
+    }
+
+    if (!emailCheck(email)) {
+      setMessageEmail('·이메일 형식을 지켜주세요!');
+      emailInfo.current.style.display = 'block';
+      console.log('이메일 형식을 지켜주세요!');
+      return;
+    } else {
+      emailInfo.current.style.display = 'none';
+      return;
+    }
+
+    // checkEmailAPI(email);
+  }
+
+  const checkUsername = () => {
+    if (userName === '') {
+      setMessageUsername('·이름을 입력해주세요.');
+      usernameInfo.current.style.display = 'block';
+      console.log('이름을 입력해주세요.');
+      return;
+    } else {
+      usernameInfo.current.style.display = 'none';
+    }
+  }
+
+  const checkPw = () => {
+    if (pw === '') {
+      setMessagePw('·비밀번호를 입력해주세요.');
+      pwInfo.current.style.display = 'block';
+      console.log('비밀번호를 입력해주세요.');
+      return;
+    } else {
+      pwInfo.current.style.display = 'none';
+    }
+
+    // if (!pwMacth(pw)) {
+    //   setMessagePw('·형식에 맞게 비밀번호를 입력해주세요.');
+    //   pwInfo.current.style.display = 'block';
+    //   console.log('형식에 맞게 비밀번호를 입력해주세요.');
+    //   return;
+    // } else {
+    //   pwInfo.current.style.display = 'none';
+    // }
+  }
+
+  const doubleCheckPw = () => {
+    if (pwCheck === '') {
+      setMessagePwCheck('·한 번 더 비밀번호를 입력해주세요.');
+      pwCheckInfo.current.style.display = 'block';
+      console.log('한 번 더 비밀번호를 입력해주세요.');
+      return;
+    } else {
+      pwCheckInfo.current.style.display = 'none';
+    }
+
+    if (pw !== pwCheck) {
+      setMessagePwCheck('·동일한 비밀번호를 입력해주세요.');
+      pwCheckInfo.current.style.display = 'block';
+      console.log('동일한 비밀번호를 입력해주세요.');
+      return;
+    } else {
+      pwCheckInfo.current.style.display = 'none';
+    }
+  }
+
   return (
     <Wrap>
       <Title>회원가입</Title>
@@ -27,39 +164,53 @@ const Register = (props) => {
         <IconSpan>
           <FontAwesomeIcon icon={faEnvelope} />
         </IconSpan>
-        <SignupInput type="text" placeholder="Email" ></SignupInput>
+        <SignupInput type="text" placeholder="Email" onChange={(e) => { setEmail(e.target.value) }} onBlur={checkEm}></SignupInput>
       </SignupBox>
+      <InfoUl ref={emailInfo}>
+        <li>{messageEmail}</li>
+      </InfoUl> 
 
       <SignupBox>
         <IconSpan>
           <FontAwesomeIcon icon={faUser} />
         </IconSpan>
-        <SignupInput type="text" placeholder="Username" ></SignupInput>
+        <SignupInput type="text" placeholder="Username" onChange={(e) => { setUserName(e.target.value) }} onBlur={checkUsername}></SignupInput>
       </SignupBox>
+      <InfoUl ref={usernameInfo}>
+        <li>{messageUsername}</li>
+      </InfoUl> 
 
       <SignupBox>
         <IconSpan>
           <FontAwesomeIcon icon={faLock} />
         </IconSpan>
-        <PwdInput type={show? "text" : "password"} placeholder="Password" ></PwdInput>
+        <PwdInput type={show? "text" : "password"} placeholder="Password" onChange={(e) => { setPw(e.target.value) }} onBlur={checkPw}>
+        </PwdInput>
         <IconEyeSpan onClick={changeEye}>
 
           {show? <FontAwesomeIcon icon={farEyeSlash} /> : <FontAwesomeIcon icon={farEye} />}
         </IconEyeSpan>
       </SignupBox>
+      <InfoUl ref={pwInfo}>
+        <li>{messagePw}</li>
+      </InfoUl>
 
       <SignupBox>
         <IconSpan>
           <FontAwesomeIcon icon={faLock} />
         </IconSpan>
-        <PwdInput type={show2? "text" : "password"} placeholder="Confirm Password" ></PwdInput>
+        <PwdInput type={show2? "text" : "password"} placeholder="Confirm Password" onChange={(e) => { setPwCheck(e.target.value) }} onBlur={doubleCheckPw}>
+        </PwdInput>
         <IconEyeSpan onClick={changeEye2}>
           
           {show2? <FontAwesomeIcon icon={farEyeSlash} /> : <FontAwesomeIcon icon={farEye} />}
         </IconEyeSpan>
       </SignupBox>
+      <InfoUl ref={pwCheckInfo}>
+        <li>{messagePwCheck}</li>
+      </InfoUl>
       
-      <SignupButton>회원가입</SignupButton>
+      <SignupButton onClick={signUp}>회원가입</SignupButton>
 
       <LoginBox>
         <LoginLink onClick={() => history.push('/login')} >로그인</LoginLink>
@@ -68,6 +219,17 @@ const Register = (props) => {
     </Wrap>
   );
 }
+
+const InfoUl = styled.ul`
+  display: none;
+  list-style-type: none;
+  font-size: 12px;
+  color: #ee3a57;
+  position: relative;
+  top: -6px;
+  left: -35px;
+  font-weight: 400;
+`
 
 const Wrap = styled.div`
   width: 280px;
@@ -144,7 +306,7 @@ const PwdInput = styled.input`
   overflow: hidden;
   color: #fff;
   font-size: 14px;
-  width: 70%;
+  width: 76%;
   outline: none;
 `;
 

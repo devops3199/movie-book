@@ -162,7 +162,7 @@ const Info2 = styled.p`
   padding: 0;
 `;
 
-const Info3 = styled.p`
+const Info3 = styled.div`
   font-size: 1rem;
   margin: 0;
   padding: 0;
