@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Previous, Next } from 'media/Svg';
-import { faSearch } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import MoiveCard from 'components/MovieCard';
 
 const Carousel = (props) => {
     const slide_temp = new Array(6).fill(0);
@@ -13,7 +12,6 @@ const Carousel = (props) => {
 
     const MoveSlide = (index) => {
         let slider = slider_container.current;
-        console.log(slider);
         slider.style.left = (-100 * index) + '%'; // 좌측으로 이동
         setCurrentIndex(index);
 
@@ -51,42 +49,10 @@ const Carousel = (props) => {
                     return(
                         <Slider key={index} style={slide_style}>
                             <MovieWrapper>
-                                <Movie>
-                                    <Detail>
-                                        <FontAwesomeIcon icon={faSearch} />
-                                    </Detail>
-                                    <Poster />
-                                    <Title>
-                                        <span>서복 (2021)</span>
-                                    </Title>
-                                </Movie>
-                                <Movie>
-                                    <Detail>
-                                        <FontAwesomeIcon icon={faSearch} />
-                                    </Detail>
-                                    <Poster />
-                                    <Title>
-                                        <span>서복 (2021)</span>
-                                    </Title>
-                                </Movie>
-                                <Movie>
-                                    <Detail>
-                                        <FontAwesomeIcon icon={faSearch} />
-                                    </Detail>
-                                    <Poster />
-                                    <Title>
-                                        <span>서복 (2021)</span>
-                                    </Title>
-                                </Movie>
-                                <Movie>
-                                    <Detail>
-                                        <FontAwesomeIcon icon={faSearch} />
-                                    </Detail>
-                                    <Poster />
-                                    <Title>
-                                        <span>서복 (2021)</span>
-                                    </Title>
-                                </Movie>
+                                <MoiveCard margin='0 1.25rem' />
+                                <MoiveCard margin='0 1.25rem' />
+                                <MoiveCard margin='0 1.25rem' />
+                                <MoiveCard margin='0 1.25rem' />
                             </MovieWrapper>
                         </Slider>
                     );
@@ -128,59 +94,6 @@ const MovieWrapper = styled.div`
     justify-content: center;
 `;
 
-const Movie = styled.div`
-    position: relative;
-    width: 15.625rem;
-    height: 24.815rem;
-    background-color: #1a1f3f;
-    cursor: pointer;
-    margin: 0 1.25rem;
-    border-radius: 10px;
-`;
-
-const Poster = styled.div`
-    width: 100%;
-    height: 21.565rem;
-    margin-right: 1.25rem;
-    background: url(https://img.hankyung.com/photo/202011/BF.24364787.1.jpg) no-repeat center;
-    background-size: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-`;
-
-const Title = styled.div`
-    width: 100%;
-    height: 3.25rem;
-    display: flex;
-    align-items: center;
-
-    & span {
-        margin-left: 0.5rem;
-        font-weight: 700;
-    }
-`;
-
-const Detail = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(238, 58, 87, .3);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity .5s;
-
-    & svg {
-        font-size: 2rem;
-    }
-
-    :hover {
-        opacity: 1;
-    }
-`;
-
 const PrevContainer = styled.div`
     z-index: 1;
     position: absolute;
@@ -193,7 +106,7 @@ const PrevContainer = styled.div`
     align-items: center;
     justify-content: center;
     background-color: #ee3a57;
-    border-radius: 50%;
+    border-radius: 10px;
 
     & svg {
         fill: #fff;
@@ -214,7 +127,7 @@ const NextContainer = styled.div`
     align-items: center;
     justify-content: center;
     background-color: #ee3a57;
-    border-radius: 50%;
+    border-radius: 10px;
 
     & svg {
         fill: #fff;

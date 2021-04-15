@@ -2,35 +2,46 @@ import React from 'react';
 import styled from 'styled-components';
 import Carousel from 'components/Carousel';
 import Card from 'components/Card';
+import { actionCreators as movieActions } from 'redux/modules/movie';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Main = (props) => {
-    const today_list = new Array(7).fill(0);
+    const dispatch = useDispatch();
+    const movie_list = useSelector((state) => state.movie.list);
     const today_user = ['abc123', 'xyz333', 'hezzs', 'dazy'];
+    const {history} = props;
+
+    React.useEffect(() => {
+        dispatch(movieActions.getMoiveToday());
+    }, []);
+
     return (
         <MainContainer>
             <Title>
                 <h3>오늘의 영화</h3>
             </Title>
             <CardContainer>
-                {today_list.map((val, index) => {
+                {movie_list.map((val, index) => {
+                    let full_title = `${val.title} (${val.opening_date})`;
+
                     if(index === 0){
                         return (
-                            <Card name='main' width='33.5rem' height='50rem' rank={index+1}></Card>
+                            <Card name='main' url={val.image_url} title={full_title} rate={val.rate} width='33.5rem' height='50rem' rank={index+1} key={index} _onClick={() => {history.push(`/detail/${val.m_id}`);}} />
                         );
                     }
                     return (
-                        <Card name={`sub${index}`} width='15.625rem' rank={index+1}></Card>
+                        <Card name={`sub${index}`} url={val.image_url} title={full_title} rate={val.rate} width='15.625rem' rank={index+1} key={index} _onClick={() => {history.push(`/detail/${val.m_id}`);}} />
                     );
                 })}
             </CardContainer>
             {today_user.map((val, index) => {
                 return(
-                    <>
-                        <Title key={index}>
+                    <React.Fragment key={index}>
+                        <Title>
                             <h3>{val}님의 영화 리스트</h3>
                         </Title>
                         <Carousel />
-                    </>
+                    </React.Fragment>
                 );
             })}
         </MainContainer>

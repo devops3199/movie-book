@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const NavBar = (props) => {
 
+    const [keyword, setKeyword] = React.useState(null);
+
     return (
         <Navbar>
             <LogoContiner>
@@ -15,9 +17,11 @@ const NavBar = (props) => {
             </LogoContiner>
             <ContentContainer>
                 <SearchContainer>
-                    <Search type='text' placeholder='영화 검색' />
+                    <Search type='text' placeholder='영화 검색' onChange={(e) => setKeyword(e.target.value)} />
                     <button>
-                        <FontAwesomeIcon icon={faSearch} />
+                        <FontAwesomeIcon icon={faSearch} onClick={() => {
+                            history.push('/result');
+                        }} />
                     </button>
                 </SearchContainer>
                 <ButtonContainer>
@@ -93,7 +97,7 @@ const Search = styled.input`
 
 const ButtonContainer = styled.div`
     & button {
-        border: 0;
+        border: 1px solid #ee3a57;
         border-radius: 5px;
         background-color: #ee3a57;
         color: #fff;
@@ -104,7 +108,6 @@ const ButtonContainer = styled.div`
         outline: none;
 
         &:hover {
-            transition: 0.2s;
             background-color: transparent;
             border: 1px solid #ee3a57;
         }

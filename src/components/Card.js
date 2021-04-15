@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Card = (props) => {
-    const { width, height, padding, name, rank, url } = props;
+    const { width, height, padding, name, rank, url, title, rate, _onClick } = props;
 
     const styles = {
         width: width,
@@ -13,16 +13,22 @@ const Card = (props) => {
     };
 
     return (
-        <CardContainer {...styles}>
+        <CardContainer {...styles} onClick={_onClick}>
             <TitleBackground {...styles}>
-                <span>서복 (2021)</span>
-                <span>4.5/5</span>
+                <span>{title}</span>
+                <span>{rate}</span>
             </TitleBackground>
             <Rank {...styles}>
                 <span>{rank}</span>
             </Rank>
         </CardContainer>
     );
+};
+
+Card.defaultProps = {
+    title : '서복',
+    rate : '9.28',
+    url : 'https://movie-phinf.pstatic.net/20210308_97/1615182990261ekXlL_JPEG/movie_image.jpg',
 };
 
 const CardContainer = styled.div`
@@ -32,7 +38,7 @@ const CardContainer = styled.div`
     height: ${(props) => props.height};
     ${(props) => (props.padding ? `padding: ${props.padding};` : '')};
     cursor: pointer;
-    background: url(https://img.hankyung.com/photo/202011/BF.24364787.1.jpg) no-repeat center;
+    background: url(${(props) => props.url}) no-repeat center;
     background-size: cover;
     border-radius: 10px;
 
