@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { history } from 'redux/configureStore';
 import { useDispatch } from 'react-redux';
+import { actionCreators as userActions } from 'redux/modules/user';
 import { idCheck, pwMacth, pwContinuous, emailCheck } from 'shared/common';
 
 import { faEye as farEye } from '@fortawesome/free-regular-svg-icons'
@@ -10,6 +11,8 @@ import { faUser, faLock, faEnvelope, faEye, faEyeSlash } from "@fortawesome/free
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Register = (props) => {
+
+  const dispatch = useDispatch();
 
   const [show, setShow] = React.useState(false);
   const [show2, setShow2] = React.useState(false);
@@ -23,47 +26,43 @@ const Register = (props) => {
 
 
   const [email, setEmail] = React.useState('');
-  const [emailDup, setEmailDup] = React.useState(false);
+  const [emailDup, setEmailDup] = React.useState(true);
   const [userName, setUserName] = React.useState('');
   const [pw, setPw] = React.useState('');
   const [pwCheck, setPwCheck] = React.useState('');
 
   const signUp = () => {
-    if (email === '') {
-      alert('이메일을 입력해주세요.');
-      return false;
+    if (email === "" || userName === "" || pw === "" || pwCheck === "") {
+      return;
+    }
+    
+    if (pw !== pwCheck) {
+      return;
     }
 
-    if (userName === '') {
-      alert('이름을(를) 입력해주세요.');
-      return false;
-    }
-
-    if (emailDup === false) {
-      alert('이메일 중복확인을 해주세요.');
-      return false;
-    }
-
-    // dispatch(userActions.signupAPI(id,pw,userName,email,address));
+    dispatch(userActions.signupAPI(email, pw, pwCheck, userName));
   }
 
   const checkEmailAPI = (email) => {
     
-    const API = `~~/${email}`;
-    fetch(API).then((response) => response.json())
-      .then((result) => {
-        
-        if (result === false) {
-          document.querySelector('.emailCheck_3').style.display = 'block';
-          console.log('이미 등록된 이메일입니다. 다시 작성해 주십시오!');
-          setEmailDup(false);
+    const API = `http://13.209.47.134/api/signup/${email}`;
+    fetch(API)
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res);
+      if (res === true) {
+        emailInfo.current.style.color = '#ee3a57';
+        setMessageEmail('·이미 등록된 이메일입니다. 다시 작성해 주십시오!');
+        console.log('이미 등록된 이메일입니다. 다시 작성해 주십시오!');
+        setEmailDup(true);
 
-        } else {
-          document.querySelector('.emailCheck_4').style.display = 'none';
-          console.log('사용이 가능한 이메일입니다.');
-          setEmailDup(true);
-        }
-      });
+      } else {
+        setMessageEmail('·사용이 가능한 이메일입니다.');
+        emailInfo.current.style.color = '#8ff6ff';
+        console.log('사용이 가능한 이메일입니다.');
+        setEmailDup(false);
+      }
+    });
   }
 
   // const checkPw = () => {
@@ -85,6 +84,7 @@ const Register = (props) => {
   const checkEm = () => {
     if (email === '') {
       setMessageEmail('·이메일을 입력해주세요.');
+      emailInfo.current.style.color = '#ee3a57';
       emailInfo.current.style.display = 'block';
       console.log('이메일을 입력해주세요.');
       return;
@@ -94,15 +94,15 @@ const Register = (props) => {
 
     if (!emailCheck(email)) {
       setMessageEmail('·이메일 형식을 지켜주세요!');
+      emailInfo.current.style.color = '#ee3a57';
       emailInfo.current.style.display = 'block';
       console.log('이메일 형식을 지켜주세요!');
       return;
     } else {
       emailInfo.current.style.display = 'none';
-      return;
     }
-
-    // checkEmailAPI(email);
+    emailInfo.current.style.display = 'block';
+    checkEmailAPI(email);
   }
 
   const checkUsername = () => {
@@ -210,7 +210,7 @@ const Register = (props) => {
         <li>{messagePwCheck}</li>
       </InfoUl>
       
-      <SignupButton onClick={signUp}>회원가입</SignupButton>
+      <SignupButton onClick={signUp} >회원가입</SignupButton>
 
       <LoginBox>
         <LoginLink onClick={() => history.push('/login')} >로그인</LoginLink>
@@ -222,6 +222,7 @@ const Register = (props) => {
 
 const InfoUl = styled.ul`
   display: none;
+  width: 250px;
   list-style-type: none;
   font-size: 12px;
   color: #ee3a57;
@@ -233,7 +234,7 @@ const InfoUl = styled.ul`
 
 const Wrap = styled.div`
   width: 280px;
-  height: 100%;
+  height: 70vh;
   margin: 0 auto;
   padding: 150px 0;
   box-sizing: border-box;

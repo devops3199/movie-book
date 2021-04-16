@@ -2,27 +2,28 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { history } from 'redux/configureStore';
-import { actionCreators as userActions } from '../redux/modules/user';
+import { actionCreators as userActions } from 'redux/modules/user';
 
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Login = (props) => {
 
-  const [id, setId] = React.useState('');
-  const [pw, setPw] = React.useState('');
   const dispatch = useDispatch();
 
-  // const login = (id,pw) => {
+  const [email, setEmail] = React.useState('');
+  const [pw, setPw] = React.useState('');
+  
+  const login = () => {
     
-  //   if (id === '' || pw === '') {
-  //     alert('아이디 혹은 비밀번호 오류입니다.');
-  //     return false;
-  //   }
+    if (email === '' || pw === '') {
+      console.log('아이디 혹은 비밀번호 오류입니다.');
+      return;
+    }
     
-  //   dispatch(userActions.loginAPI(id,pw));
-
-  // }
+    dispatch(userActions.loginAPI(email,pw));
+    // history.push('/')
+  }
 
   return (
     <Wrap>
@@ -32,17 +33,17 @@ const Login = (props) => {
         <IconSpan>
           <FontAwesomeIcon icon={faUser} />
         </IconSpan>
-        <LoginInput type="text" placeholder="Username" ></LoginInput>
+        <LoginInput type="text" placeholder="Username" onChange={(e) => { setEmail(e.target.value) }} ></LoginInput>
       </LoginBox>
 
       <LoginBox>
         <IconSpan>
           <FontAwesomeIcon icon={faLock} />
         </IconSpan>
-        <LoginInput type="password" placeholder="Password" ></LoginInput>
+        <LoginInput type="password" placeholder="Password" onChange={(e) => { setPw(e.target.value) }} ></LoginInput>
       </LoginBox>
 
-      <LoginButton>로그인</LoginButton>
+      <LoginButton onClick={login} >로그인</LoginButton>
 
       <SignupBox>
         <SignupLink onClick={() => history.push('/register')} >회원가입</SignupLink>
