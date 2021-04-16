@@ -1,12 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 import { history } from 'redux/configureStore';
+import {getLocal, deleteLocal} from "shared/Local";
+import { useSelector, useDispatch } from 'react-redux';
+import { actionCreators as userActions } from 'redux/modules/user';
+
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const NavBar = (props) => {
 
+    const dispatch = useDispatch();
+
     const [keyword, setKeyword] = React.useState(null);
+
+    const is_login = useSelector((state) => state.user.is_login);
+    const userInfo = useSelector((state) => state.user.user);
+    
+
+    // function logout(){
+    //     fetch("http://13.209.47.134/api/", {
+    //         method : "PUT",
+    //         headers : {
+    //             "X-AUTH-TOKEN" : localStorage.getItem("X-AUTH-TOKEN"),
+    //             'Content-Type' : 'application/json',
+    //         },
+    //         body : localStorage.getItem("cart"),
+    //     })
+    //     .then(res => console.log(res))
+
+    //     localStorage.clear()       
+    //     history.replace('/')
+        
+    // }
 
     return (
         <Navbar>
@@ -24,14 +50,30 @@ const NavBar = (props) => {
                         }} />
                     </button>
                 </SearchContainer>
-                <ButtonContainer>
-                    <button onClick={() => {
-                        history.push('/login');
-                    }}>로그인</button>
-                    <button onClick={() => {
-                        history.push('/register');
-                    }}>회원가입</button>
-                </ButtonContainer>
+                {!is_login && (
+                    <React.Fragment>
+                        <ButtonContainer>
+                            <button onClick={() => {
+                                history.push('/login');
+                            }}>로그인</button>
+                            <button onClick={() => {
+                                history.push('/register');
+                            }}>회원가입</button>
+                        </ButtonContainer>
+                    </React.Fragment>
+                )}
+                {is_login && (
+                    <React.Fragment>
+                        <ButtonContainer>
+                            <button onClick={() => {
+                                history.push('/');
+                            }}>내 영화</button>
+                            <button onClick={() => {
+                                dispatch(userActions.logout({}));
+                            }}>로그아웃</button>
+                        </ButtonContainer>
+                    </React.Fragment>
+                )}
             </ContentContainer>
         </Navbar>
     );
