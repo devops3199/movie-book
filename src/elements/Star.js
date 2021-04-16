@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import 'Star.css';
 
 import { faStar } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,32 +9,26 @@ import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
 
 const Star = (props) => {
 
-  const [rating, setRating] = React.useState(null);
-  const [hover, setHover] = React.useState(null);
+  const [ rating, setRating ] = React.useState(null);
+
+  const starClick = (e) => {
+    setRating(e.target.value);
+  };
 
   return (
     <React.Fragment>
       <Box>
-        <Stars>
-          {[...Array(5)].map((star, i) => {
-              const ratingValue = (i + 1) * 2;
-            return (
-                <label key={i}>
-                  <StarInput 
-                    type="radio" 
-                    name="rating" 
-                    value={ratingValue} 
-                    onClick={() => setRating(ratingValue)}
-                  />
-                  <FontAwesomeIcon 
-                    icon={faStar} 
-                    color={ratingValue <= (hover || rating) ? "#ee3a57" : "#d1d1d1"}
-                    onMouseEnter={() => setHover(ratingValue)}
-                    onMouseLeave={() => setHover(null)}
-                  />
-                </label>
-            );
-          })}
+        <Stars className="rating">
+          <input type="radio" id="star10" name="rating" value="10" onChange={starClick} /><label for="star10" class="full"></label>
+          <input type="radio" id="star9" name="rating" value="9" onChange={starClick} /><label for="star9" class="half"></label>
+          <input type="radio" id="star8" name="rating" value="8" onChange={starClick} /><label for="star8" class="full"></label>
+          <input type="radio" id="star7" name="rating" value="7" onChange={starClick} /><label for="star7" class="half"></label>
+          <input type="radio" id="star6" name="rating" value="6" onChange={starClick} /><label for="star6" class="full"></label>
+          <input type="radio" id="star5" name="rating" value="5" onChange={starClick} /><label for="star5" class="half"></label>
+          <input type="radio" id="star4" name="rating" value="4" onChange={starClick} /><label for="star4" class="full"></label>
+          <input type="radio" id="star3" name="rating" value="3" onChange={starClick} /><label for="star3" class="half"></label>
+          <input type="radio" id="star2" name="rating" value="2" onChange={starClick} /><label for="star2" class="full"></label>
+          <input type="radio" id="star1" name="rating" value="1" onChange={starClick} /><label for="star1" class="half"></label>
         </Stars>
         <Num>{rating}</Num>
       </Box>
@@ -45,35 +40,30 @@ Star.defaultProps = {
 
 }
 
-const StarInput = styled.input`
-  display: none;
-`;
-
 const Box = styled.div`
   margin: 0;
   padding: 0;
   height: 50px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
 `;
 
 const Stars = styled.div`
-  margin: 5px 0 0;
-  padding: 0;
-  font-size: 1rem;
-  display: flex;
-  gap: 3px;
+  margin-top: 5px;
+  
 `;
 
-const Num = styled.div`
-  margin: 2.4px 0 0;
+const Num = styled.span`
+  margin: 0;
   padding: 0;
-  height: 30px;
+  height: 100%;
   color: #fff;
   font-size: 1.25rem;
   font-weight: 700;
-  display: inline-flex;
+  display: flex;
+  align-items: center;
+
 `;
 
 export default Star;
