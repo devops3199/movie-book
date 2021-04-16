@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import _ from 'lodash';
 
 const InfinityScroll = (props) => {
-
     const {callNext, is_next, loading} = props;
 
     const handleScroll = _.throttle(() => {
@@ -13,7 +12,6 @@ const InfinityScroll = (props) => {
         const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
  
         if(scrollHeight - innerHeight - scrollTop < 200){
-            console.log(scrollHeight - innerHeight - scrollTop, '스크롤 위치');
             callNext();
         }
         
@@ -22,7 +20,7 @@ const InfinityScroll = (props) => {
     //const handleScroll = useCallback(_handleScroll, [loading]); // 메모이제이션
 
     React.useEffect(() => {
-        if(is_next){
+        if(!is_next){
             window.addEventListener('scroll', handleScroll);
         } else {
             window.removeEventListener('scroll', handleScroll);

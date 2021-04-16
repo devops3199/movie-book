@@ -4,6 +4,7 @@ import { history } from 'redux/configureStore';
 import {getLocal, deleteLocal} from "shared/Local";
 import { useSelector, useDispatch } from 'react-redux';
 import { actionCreators as userActions } from 'redux/modules/user';
+import { actionCreators as movieActions } from 'redux/modules/movie';
 
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -46,6 +47,7 @@ const NavBar = (props) => {
                     <Search type='text' placeholder='영화 검색' onChange={(e) => setKeyword(e.target.value)} />
                     <button>
                         <FontAwesomeIcon icon={faSearch} onClick={() => {
+                            dispatch(movieActions.clearSearchPage());
                             history.push('/result');
                         }} />
                     </button>

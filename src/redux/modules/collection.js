@@ -16,7 +16,7 @@ const getCollection = () => {
 
         // forEach does not support async await
         for(let i = 0; i < users.length; i++) {
-            const api = `http://13.209.47.134/api/collections/${users[i]}`;
+            const api = `http://13.209.47.134/api/collections/list/${users[i]}`;
             const result = await fetch(api).then(res => res.json());
             let user_name = result[0].user.name + i; // 임시
             let temp = { [user_name] : result };
