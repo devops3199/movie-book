@@ -4,11 +4,16 @@ import { Previous, Next } from 'media/Svg';
 import MoiveCard from 'components/MovieCard';
 
 const Carousel = (props) => {
-    const slide_temp = new Array(6).fill(0);
+    const slide_content = props.list
+    const lastIndex = Math.ceil(props.list.length/4);
+    const slide_temp = new Array(lastIndex).fill(0);
+
     const slider_container = React.useRef();
     const prev = React.useRef();
     const next = React.useRef();
     const [current_index, setCurrentIndex] = React.useState(0); // 현재 보여지는 슬라이더
+
+    const {history} = props;
 
     const MoveSlide = (index) => {
         let slider = slider_container.current;
@@ -16,7 +21,7 @@ const Carousel = (props) => {
         setCurrentIndex(index);
 
         // 버튼 활성화 설정
-        if(index === 5) {
+        if(index === lastIndex-1) {
             next.current.style.display = 'none';
         } else if (index === 0) {
             prev.current.style.display = 'none';
@@ -40,19 +45,26 @@ const Carousel = (props) => {
             </NextContainer>
             <SliderContainer ref={slider_container}>
                 {slide_temp.map((val, index) => {
+
                     let value = index * 100;
-    
                     const slide_style = {
                         left: `${value}%`,
                     };
 
+                    let start = index * 4;
+                    let end = start + 4;
+
+                    let temp_arr = slide_content.slice(start, end);
+
                     return(
                         <Slider key={index} style={slide_style}>
                             <MovieWrapper>
-                                <MoiveCard margin='0 1.25rem' />
-                                <MoiveCard margin='0 1.25rem' />
-                                <MoiveCard margin='0 1.25rem' />
-                                <MoiveCard margin='0 1.25rem' />
+                                {temp_arr.map((val, index) => {
+                                    let full_title = `${val.movie.title} (${val.movie.opening_date})`;
+                                    return (
+                                        <MoiveCard key={index} margin='0 1.25rem' url={val.movie.image_url} title={full_title} rate={val.movie.rate} _onClick={() => {history.push(`/detail/${val.movie.m_id}`);}} />
+                                    );
+                                })}
                             </MovieWrapper>
                         </Slider>
                     );

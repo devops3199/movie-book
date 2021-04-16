@@ -4,20 +4,21 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const MoiveCard = (props) => {
-    const { margin, title, url} = props;
+    const { margin, title, url, rate, _onClick } = props;
 
     const styles = {
         margin : margin,
     };
 
     return(
-        <Movie {...styles}>
+        <Movie {...styles} onClick={_onClick}>
             <Detail>
                 <FontAwesomeIcon icon={faSearch} />
             </Detail>
             <Poster url={url} />
             <Title>
                 <span>{title}</span>
+                <span>{rate}</span>
             </Title>
         </Movie>
     );
@@ -25,6 +26,7 @@ const MoiveCard = (props) => {
 
 MoiveCard.defaultProps = {
     title : '서복',
+    rate : 9,
     url : 'https://movie-phinf.pstatic.net/20210308_97/1615182990261ekXlL_JPEG/movie_image.jpg',
 };
 
@@ -54,9 +56,10 @@ const Title = styled.div`
     height: 3.25rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     & span {
-        margin-left: 0.5rem;
+        margin: 0 0.5rem;
         font-weight: 700;
     }
 `;

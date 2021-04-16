@@ -3,16 +3,18 @@ import styled from 'styled-components';
 import Carousel from 'components/Carousel';
 import Card from 'components/Card';
 import { actionCreators as movieActions } from 'redux/modules/movie';
+import { actionCreators as collectionActions } from 'redux/modules/collection';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Main = (props) => {
     const dispatch = useDispatch();
     const movie_list = useSelector((state) => state.movie.list);
-    const today_user = ['abc123', 'xyz333', 'hezzs', 'dazy'];
+    const collection_list = useSelector((state) => state.collection.list);
     const {history} = props;
 
     React.useEffect(() => {
         dispatch(movieActions.getMoiveToday());
+        dispatch(collectionActions.getCollection());
     }, []);
 
     return (
@@ -34,13 +36,13 @@ const Main = (props) => {
                     );
                 })}
             </CardContainer>
-            {today_user.map((val, index) => {
+            {Object.entries(collection_list).map((val, index) => {
                 return(
                     <React.Fragment key={index}>
                         <Title>
-                            <h3>{val}님의 영화 리스트</h3>
+                            <h3>{val[0]}님의 영화 리스트</h3>
                         </Title>
-                        <Carousel />
+                        <Carousel list={val[1]} history={history} />
                     </React.Fragment>
                 );
             })}

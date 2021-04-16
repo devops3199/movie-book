@@ -14,7 +14,7 @@ const Result = (props) => {
     };
 
     React.useEffect(() => {
-        dispatch(movieActions.getMoiveSearch(''));
+        dispatch(movieActions.getMoiveSearch('아', 0));
     }, []);
 
     return(
@@ -46,8 +46,9 @@ const ResultContainer = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    max-width: 1400px;
+    max-width: 700px;
     height: 100%;
+    margin: 0 auto;
 `;
 
 const ResultText = styled.div`

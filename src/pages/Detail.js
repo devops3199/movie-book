@@ -8,53 +8,68 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Star from "elements/Star";
 import Review from "components/Review";
 
-const Detail = (props) => {
+import { actionCreators as movieActions } from 'redux/modules/movie';
+import { useSelector, useDispatch } from 'react-redux';
 
-    return(
-        <Wrap>
-          <MovieImg></MovieImg>
-          <TitleBox>
-            <Title>자산어보</Title>
-            <Info1>
-              <Y>2020</Y>
-              <RunTime>1시간 57분</RunTime>
-            </Info1>
-            <Limit>15세이상관람가</Limit>
-            <StarBox>
-              <StarOne><FontAwesomeIcon icon={faStar} /></StarOne>
-              <StarNum>5.0</StarNum>
-            </StarBox>
-          </TitleBox>
-          
-          <Info2>
-            어떤 일에도 쉽게 동요하지 않는 냉철한 용병. 그가 살아남기 위해 자신을 끊임없이 성찰한다. 
-            마약왕에게 납치된 아들을 구하러 간 방글라데시에서 그 모든 것이 시작됐다.
-          </Info2>
-          <Info3>
-            <Director>감독: 샘 하그레이브</Director>
-            <Actor>출연: 크리스 헴스워스, 루드락시 자이스왈, 란딥 후다</Actor>
-            <Genre>장르: 액션</Genre>
-          </Info3>
-          <MyListBtn>+ 내 리스트에 담기</MyListBtn>
-          <ReviewBox>
-            <ReStarBox>
-              <Star/>
-              <WritingBtn>작성</WritingBtn>
-            </ReStarBox>
-            <ReWriting>
-              <P placeholder="댓글을 남겨주세요">
-              </P>
-              {/* <ReUser>
-                <li>gaflke88</li>
-                <li>2021.03.24 14:22</li>
-              </ReUser> */}
-            </ReWriting>
-          </ReviewBox>
-          <Review/>
-          <Review/>
-          
-        </Wrap>
-    )
+const Detail = (props) => {
+  const id = props.match.params.id;
+  const dispatch = useDispatch();
+
+  const movie_detail = useSelector((state) => state.movie.detail);
+  const movie_comment = useSelector((state) => state.movie.comment);
+
+  const [reviewContent, setReviewContent] = React.useState(null);
+
+  const makeReview = () => {
+    console.log(reviewContent);
+  };
+  
+  React.useEffect(() => {
+    dispatch(movieActions.getMovieDetail(id));
+    window.scrollTo(0, 0);
+  }, []);
+
+  return(
+      <Wrap>
+        <MovieImg url={movie_detail.image_url}></MovieImg>
+        <TitleBox>
+          <Title>{movie_detail.title}</Title>
+          <Info1>
+            <Y>{movie_detail.opening_date}</Y>
+            <RunTime>{movie_detail.running_time}</RunTime>
+          </Info1>
+          <Limit>{movie_detail.grade}</Limit>
+          <StarBox>
+            <StarOne><FontAwesomeIcon icon={faStar} /></StarOne>
+            <StarNum>{movie_detail.rate}</StarNum>
+          </StarBox>
+        </TitleBox>
+        
+        <Info2>
+          {movie_detail.description}
+        </Info2>
+        <br/>
+        <Info3>
+          <Director>감독: {movie_detail.director}</Director>
+          <Actor>출연: {movie_detail.actor1} {movie_detail.actor2} {movie_detail.actor3}</Actor>
+        </Info3>
+        <MyListBtn>+ 내 리스트에 담기</MyListBtn>
+        <ReviewBox>
+          <ReStarBox>
+            <Star/>
+            <WritingBtn onClick={makeReview}>작성</WritingBtn>
+          </ReStarBox>
+          <ReWriting>
+            <ReviewArea placeholder="댓글을 남겨주세요" onChange={(e) => {setReviewContent(e.target.value)}}>
+            </ReviewArea>
+          </ReWriting>
+        </ReviewBox>
+
+        {movie_comment.map((val, index) => {
+          return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.username} content={val.content} />
+        })}
+      </Wrap>
+  )
 }
 
 const Wrap = styled.div`
@@ -76,7 +91,7 @@ const MovieImg = styled.div`
   
   overflow: hidden;
   object-fit: contain;
-  background-image: url("https://movie-phinf.pstatic.net/20210331_104/1617166166627wzUHH_JPEG/movie_image.jpg");
+  background-image: url(${(props) => props.url});
   background-size: 285px;
   background-repeat: no-repeat;
   background-position: center;
@@ -253,30 +268,11 @@ const ReWriting = styled.div`
   max-width: 700px;
 `;
 
-const P = styled.textarea`
+const ReviewArea = styled.textarea`
   margin: 0;
   width: 100%;
   height: 70px;
   padding: 10px;
 `;
-
-// const ReUser = styled.ul`
-//   font-size:13px;
-//   display: flex;
-//   margin: 16px 0 5px;
-//   gap:5px;
-//   list-style-type: none;
-//   padding: 0;
-//   color: rgba(204, 204, 204, 0.5);
-  
-//   & li:nth-child(1)::after{
-//     content: '|';
-//     font-size: 6px;
-//     font-weight: 600;
-//     margin-left: 5px;
-//     position: relative;
-//     top:-2px;
-//   }
-// `;
 
 export default Detail;

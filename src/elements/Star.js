@@ -16,7 +16,7 @@ const Star = (props) => {
       <Box>
         <Stars>
           {[...Array(5)].map((star, i) => {
-              const ratingValue = i + 1;
+              const ratingValue = (i + 1) * 2;
             return (
                 <label key={i}>
                   <StarInput 

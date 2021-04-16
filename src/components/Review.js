@@ -8,6 +8,8 @@ import Star from "elements/Star";
 
 const Review = (props) => {
 
+  const { date, rate, username, content } = props;
+
   return (
     <React.Fragment>
       <ReviewBox>
@@ -20,16 +22,16 @@ const Review = (props) => {
               <FontAwesomeIcon icon={faStar} />
               <FontAwesomeIcon icon={faStar} />
             </Stars>
-            <Num>5</Num>
+            <Num>{rate}</Num>
           </Box>
         </ReStarBox>
         <ReWriting>
-          <P>시리즈 중 최고였던거 같아요;;; 극장가서 보길 잘한듯 ㄹㅇ 존잼임ㅋㅋ 님들아 꼭 나믿고 포디로 보셔라
-            시리즈 중 최고였던거 같아요;;; 극장가서 보길 잘한듯 ㄹㅇ 존잼임ㅋㅋ 님들아 꼭 나믿고 포디로 보셔라
+          <P>
+            {content}
           </P>
           <ReUser>
-            <li>gaflke88</li>
-            <li>2021.03.24 14:22</li>
+            <li>{username}</li>
+            <li>{date}</li>
           </ReUser>
         </ReWriting>
       </ReviewBox>
