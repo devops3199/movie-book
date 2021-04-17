@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useState } from 'react';
 import 'App.css';
 import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
@@ -8,38 +8,44 @@ import { Login, Register, Main, Detail, Result } from 'pages/page';
 import Star from 'elements/Star';
 import styled from 'styled-components';
 
+export const KeywordContext = createContext();
+
 const App = (props) => {
+
+  const [keyword, setKeyword] = useState('');
 
   React.useEffect(() => {
     //로그인 체크
   }, []);
 
   return (
-    <BodyContainer>
-      <Header>
-        <NavBar />
-      </Header>
-      <Container>
-        <ConnectedRouter history={history}>
-          <Route path="/" exact component={Main} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/register" exact component={Register} />
-          <Route path="/detail/:id" exact component={Detail} />
-          <Route path="/result" exact component={Result} />
-          <Route path="/star" exact component={Star} />
-        </ConnectedRouter>
-      </Container>
-      <Footer>
-        <FooterContainer>
-          <FooterLogo>
-            <span>MovieBook</span>
-          </FooterLogo>
-          <FooterText>
-            <span>MovieBook 이용약관 | 개인정보처리방침 | 영화서비스 이용약관</span>
-          </FooterText>
-        </FooterContainer>
-      </Footer>
-    </BodyContainer>
+    <KeywordContext.Provider value={{ keyword, setKeyword }}>
+      <BodyContainer>
+        <Header>
+          <NavBar />
+        </Header>
+        <Container>
+          <ConnectedRouter history={history}>
+            <Route path="/" exact component={Main} />
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register} />
+            <Route path="/detail/:id" exact component={Detail} />
+            <Route path="/result" exact component={Result} />
+            <Route path="/star" exact component={Star} />
+          </ConnectedRouter>
+        </Container>
+        <Footer>
+          <FooterContainer>
+            <FooterLogo>
+              <span>MovieBook</span>
+            </FooterLogo>
+            <FooterText>
+              <span>MovieBook 이용약관 | 개인정보처리방침 | 영화서비스 이용약관</span>
+            </FooterText>
+          </FooterContainer>
+        </Footer>
+      </BodyContainer>
+    </KeywordContext.Provider>
   );
 }
 

@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import InfinityScroll from 'shared/InfinityScroll';
 import MoiveCard from 'components/MovieCard';
 import { actionCreators as movieActions } from 'redux/modules/movie';
 import { useSelector, useDispatch } from 'react-redux';
+import { KeywordContext } from 'App';
 
 const SearchResult = (props) => {
     const dispatch = useDispatch();
     const search_list = useSelector((state) => state.movie.search.content);
     const is_last = useSelector((state) => state.movie.search.last);
 
+    const {keyword} = useContext(KeywordContext);
+
     const scroll = () => {
-        dispatch(movieActions.getMoiveSearch(''));
+        dispatch(movieActions.getMoiveSearch(keyword));
     };
 
     React.useEffect(() => {
-        dispatch(movieActions.getMoiveSearch(''));
-    }, []);
+        dispatch(movieActions.clearSearchPage());
+        dispatch(movieActions.getMoiveSearch(keyword));
+    }, [keyword]);
 
     return (
         <MovieList>

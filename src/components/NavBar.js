@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { history } from 'redux/configureStore';
 import {getLocal, deleteLocal} from "shared/Local";
@@ -8,16 +8,22 @@ import { actionCreators as movieActions } from 'redux/modules/movie';
 
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { KeywordContext } from 'App';
 
 const NavBar = (props) => {
 
     const dispatch = useDispatch();
 
-    const [keyword, setKeyword] = React.useState(null);
+    const {setKeyword} = useContext(KeywordContext);
 
     const is_login = useSelector((state) => state.user.is_login);
     const userInfo = useSelector((state) => state.user.user);
+    const [keywordClick, setKeywordClick] = React.useState('');
     
+    const SearchMovie = () => {
+        dispatch(movieActions.clearSearchPage());
+        history.push('/result');
+    };
 
     // function logout(){
     //     fetch("http://13.209.47.134/api/", {
@@ -44,11 +50,16 @@ const NavBar = (props) => {
             </LogoContiner>
             <ContentContainer>
                 <SearchContainer>
-                    <Search type='text' placeholder='영화 검색' onChange={(e) => setKeyword(e.target.value)} />
+                    <Search type='text' placeholder='영화 검색' onChange={(e) => {setKeywordClick(e.target.value)}} onKeyUp={(e) => {
+                        if(window.event.keyCode === 13) {
+                            setKeyword(e.target.value);
+                            SearchMovie();
+                        } 
+                    }} />
                     <button>
                         <FontAwesomeIcon icon={faSearch} onClick={() => {
-                            dispatch(movieActions.clearSearchPage());
-                            history.push('/result');
+                            setKeyword(keywordClick);
+                            SearchMovie();
                         }} />
                     </button>
                 </SearchContainer>

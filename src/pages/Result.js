@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import SearchResult from 'components/SearchResult';
+import { KeywordContext } from 'App';
 
 const Result = (props) => {
+
+    const {keyword} = useContext(KeywordContext);
 
     return(
         <ResultContainer>
             <ResultText>
-                <span>전체 검색 결과</span>
+                <span>{keyword === '' ? '전체' : `"${keyword}"`} 검색 결과</span>
             </ResultText>
             <SearchResult />
         </ResultContainer>
