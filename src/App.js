@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import { history } from 'redux/configureStore';
 import NavBar from 'components/NavBar';
-import { Login, Register, Main, Detail, Result } from 'pages/page';
+import { Login, Register, Main, Detail, Result, MyMovie } from 'pages/page';
 import styled from 'styled-components';
 
 export const KeywordContext = createContext();
@@ -30,6 +30,7 @@ const App = (props) => {
               <Route path="/register" exact component={Register} />
               <Route path="/detail/:id" exact component={Detail} />
               <Route path="/result" exact component={Result} />
+              <Route path="/mymovie" exact component={MyMovie} />
             </ConnectedRouter>
           </Container>
         <Footer>
