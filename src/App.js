@@ -5,7 +5,6 @@ import { ConnectedRouter } from 'connected-react-router';
 import { history } from 'redux/configureStore';
 import NavBar from 'components/NavBar';
 import { Login, Register, Main, Detail, Result } from 'pages/page';
-import Star from 'elements/Star';
 import styled from 'styled-components';
 
 const App = (props) => {
@@ -26,7 +25,6 @@ const App = (props) => {
           <Route path="/register" exact component={Register} />
           <Route path="/detail/:id" exact component={Detail} />
           <Route path="/result" exact component={Result} />
-          <Route path="/star" exact component={Star} />
         </ConnectedRouter>
       </Container>
       <Footer>

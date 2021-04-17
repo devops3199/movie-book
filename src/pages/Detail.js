@@ -239,7 +239,7 @@ const ReStarBox = styled.div`
   height: 30px;
   display: flex;
   justify-content: space-between;
-  align-items: ;
+  align-items: center;
 `;
 
 const WritingBtn = styled.button`
@@ -264,8 +264,8 @@ const WritingBtn = styled.button`
 
 const ReWriting = styled.div`
   height: 100%;
+  width: 100%;
   margin: 5px 0 0;
-  max-width: 700px;
 `;
 
 const ReviewArea = styled.textarea`

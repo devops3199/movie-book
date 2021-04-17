@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { history } from 'redux/configureStore';
 import { actionCreators as userActions } from 'redux/modules/user';
 
-import { faUser, faLock } from "@fortawesome/free-solid-svg-icons"
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Login = (props) => {
@@ -31,9 +31,9 @@ const Login = (props) => {
 
       <LoginBox>
         <IconSpan>
-          <FontAwesomeIcon icon={faUser} />
+          <FontAwesomeIcon icon={faEnvelope} />
         </IconSpan>
-        <LoginInput type="text" placeholder="Username" onChange={(e) => { setEmail(e.target.value) }} ></LoginInput>
+        <LoginInput type="text" placeholder="Email" onChange={(e) => { setEmail(e.target.value) }} ></LoginInput>
       </LoginBox>
 
       <LoginBox>

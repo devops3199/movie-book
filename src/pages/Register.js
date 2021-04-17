@@ -228,7 +228,7 @@ const InfoUl = styled.ul`
   color: #ee3a57;
   position: relative;
   top: -6px;
-  left: -35px;
+  left: 6px;
   font-weight: 400;
 `
 
