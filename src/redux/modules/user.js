@@ -115,13 +115,12 @@ const isLogin = () => {
 export default handleActions(
   {
     [SET_USER]: (state, action) => produce(state, (draft) => {
-      // setLocal("is_login", "success");
       draft.uid = action.payload.uid;
       draft.user = action.payload.user;
       draft.is_login = true;
     }),
     [LOG_OUT]: (state, action) => produce(state, (draft) => {
-      deleteLocal("is_login");
+      draft.uid = null;
       draft.user = null;
       draft.is_login = false;
     }),

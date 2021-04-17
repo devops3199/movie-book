@@ -22,22 +22,6 @@ const NavBar = (props) => {
         history.push('/result');
     };
 
-    // function logout(){
-    //     fetch("http://13.209.47.134/api/", {
-    //         method : "PUT",
-    //         headers : {
-    //             "X-AUTH-TOKEN" : localStorage.getItem("X-AUTH-TOKEN"),
-    //             'Content-Type' : 'application/json',
-    //         },
-    //         body : localStorage.getItem("cart"),
-    //     })
-    //     .then(res => console.log(res))
-
-    //     localStorage.clear()       
-    //     history.replace('/')
-        
-    // }
-
     return (
         <Navbar>
             <LogoContiner>
