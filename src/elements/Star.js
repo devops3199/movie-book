@@ -46,7 +46,7 @@ const Box = styled.div`
   height: 50px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 `;
 
 const Stars = styled.div`
@@ -59,7 +59,7 @@ const Num = styled.span`
   padding: 0;
   height: 100%;
   color: #fff;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   display: flex;
   align-items: center;

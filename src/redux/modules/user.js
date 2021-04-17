@@ -9,6 +9,7 @@ const setUser = createAction(SET_USER, (user) => ({ user }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 
 const initialState = {
+  uid: null,
   user: null,
   is_login: false,
 };
@@ -21,6 +22,7 @@ const signupAPI = (email, pw, pwCheck, userName) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         username: email,
@@ -29,9 +31,9 @@ const signupAPI = (email, pw, pwCheck, userName) => {
         name: userName,
     })
   })
-    .then((res) => res.json())
+    .then((res) => res.text())
     .then((res) => {
-      console.log(res);
+      alert(res);
     });
 
     history.push('/login');
@@ -44,38 +46,43 @@ const loginAPI = (email, pw) => {
     fetch(API, {
       method: 'POST',
       headers: {
-      'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         username: email,
         password: pw,
       })
     })
-    .then(res => res.json())
-    .then((res) => {
+    .then((result) => {
     
-        console.log(res);
-        //성공시 토큰, 유저 정보 저장
-    // if (result.status === 200) {
-    //   let token = result.headers.get("Authorization");
-    //   let userInfo = result.headers.get('userInfo');
-    //   userInfo = JSON.parse(userInfo);
-    //   userInfo.name = decodeURI(atob(userInfo.name));
-    //   userInfo.address = decodeURI(atob(userInfo.address));
-    //   localStorage.setItem('token', token);
-    //   localStorage.setItem('userInfo', JSON.stringify(userInfo));
-    //   dispatch(setUser({
-    //     uid: userInfo.uid,
-    //     name: userInfo.name,
-    //     address: userInfo.address.split('+').join(' '),
-    //   }))
-    //   history.push('/');
-    // } else {
-    //   window.alert('로그인에 실패했습니다.');
-    // }
-    }).catch((error) => {
+      console.log(result);
+      // let userInfo = result.json();
+      
+      //성공시 토큰, 유저 정보 저장
+      if (result.status === 200) {
+        let token = result.headers.get("Authorization");
+
+        localStorage.setItem('token', token);
+        console.log(localStorage.getItem("token"));
+        
+      } else {
+        window.alert('로그인에 실패했습니다.');
+      }
+      return result.json();
+    })
+    .then(result => {
+      console.log(result);
+      localStorage.setItem('userInfo', JSON.stringify(result));
+      dispatch(setUser({
+        uid: result.u_id,
+        name: result.name,
+      }))
+    })
+    .catch((error) => {
     console.log(error);
     });
+    history.push('/');
   }
 };
 
@@ -109,6 +116,7 @@ export default handleActions(
   {
     [SET_USER]: (state, action) => produce(state, (draft) => {
       // setLocal("is_login", "success");
+      draft.uid = action.payload.uid;
       draft.user = action.payload.user;
       draft.is_login = true;
     }),
