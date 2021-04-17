@@ -1,18 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import SearchResult from 'components/SearchResult';
-import { KeywordContext } from 'App';
+import { useSelector } from 'react-redux';
 
 const Result = (props) => {
 
-    const {keyword} = useContext(KeywordContext);
+    const keyword = useSelector((state) => state.movie.keyword);
 
     return(
         <ResultContainer>
             <ResultText>
                 <span>{keyword === '' ? '전체' : `"${keyword}"`} 검색 결과</span>
             </ResultText>
-            <SearchResult />
+            <SearchResult history={props.history} />
         </ResultContainer>
     );
 };

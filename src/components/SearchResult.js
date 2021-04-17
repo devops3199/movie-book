@@ -1,26 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import InfinityScroll from 'shared/InfinityScroll';
 import MoiveCard from 'components/MovieCard';
 import { actionCreators as movieActions } from 'redux/modules/movie';
 import { useSelector, useDispatch } from 'react-redux';
-import { KeywordContext } from 'App';
 
 const SearchResult = (props) => {
     const dispatch = useDispatch();
     const search_list = useSelector((state) => state.movie.search.content);
     const is_last = useSelector((state) => state.movie.search.last);
 
-    const {keyword} = useContext(KeywordContext);
+    const history = props.history;
 
     const scroll = () => {
-        dispatch(movieActions.getMoiveSearch(keyword));
+        dispatch(movieActions.getMoiveScroll());
     };
-
-    React.useEffect(() => {
-        dispatch(movieActions.clearSearchPage());
-        dispatch(movieActions.getMoiveSearch(keyword));
-    }, [keyword]);
 
     return (
         <MovieList>
@@ -32,7 +26,7 @@ const SearchResult = (props) => {
                     let full_title = `${val.title} (${val.opening_date})`;
 
                     return(
-                        <MoiveCard margin='1rem 1.25rem' key={index} title={full_title} url={val.image_url} rate={val.rate} />
+                        <MoiveCard margin='1rem 1.25rem' key={index} title={full_title} url={val.image_url} rate={val.rate} _onClick={() => {history.push(`/detail/${val.m_id}`);}} />
                     );
                 })}
             </InfinityScroll>

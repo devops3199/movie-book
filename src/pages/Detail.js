@@ -19,9 +19,35 @@ const Detail = (props) => {
   const movie_comment = useSelector((state) => state.movie.comment);
 
   const [reviewContent, setReviewContent] = React.useState(null);
+  const [reviewStar, setReviewStar] = React.useState(null);
 
   const makeReview = () => {
-    console.log(reviewContent);
+    if(reviewContent === null && reviewStar === null) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    if(reviewContent === null) {
+      alert("리뷰 내용을 입력해주세요.");
+      return;
+    }
+
+    if(reviewStar === null) {
+      alert("별점을 선택해주세요.");
+      return;
+    }
+
+    const obj = {
+      m_id : id,
+      rate : reviewStar,
+      content : reviewContent,
+    };
+
+    dispatch(movieActions.addComment(obj));
+  };
+
+  const addCollection = () => {
+    console.log('리스트 추가');
   };
   
   React.useEffect(() => {
@@ -53,10 +79,10 @@ const Detail = (props) => {
           <Director>감독: {movie_detail.director}</Director>
           <Actor>출연: {movie_detail.actor1} {movie_detail.actor2} {movie_detail.actor3}</Actor>
         </Info3>
-        <MyListBtn>+ 내 리스트에 담기</MyListBtn>
+        <MyListBtn onClick={addCollection}>+ 내 리스트에 담기</MyListBtn>
         <ReviewBox>
           <ReStarBox>
-            <Star/>
+            <Star setReviewStar={setReviewStar} />
             <WritingBtn onClick={makeReview}>작성</WritingBtn>
           </ReStarBox>
           <ReWriting>

@@ -8,20 +8,17 @@ import { actionCreators as movieActions } from 'redux/modules/movie';
 
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { KeywordContext } from 'App';
 
 const NavBar = (props) => {
 
     const dispatch = useDispatch();
 
-    const {setKeyword} = useContext(KeywordContext);
-
     const is_login = useSelector((state) => state.user.is_login);
     const userInfo = useSelector((state) => state.user.user);
-    const [keywordClick, setKeywordClick] = React.useState('');
+    const [keyword, setKeyword] = React.useState('');
     
     const SearchMovie = () => {
-        dispatch(movieActions.clearSearchPage());
+        dispatch(movieActions.getMoiveSearch(keyword));
         history.push('/result');
     };
 
@@ -50,15 +47,13 @@ const NavBar = (props) => {
             </LogoContiner>
             <ContentContainer>
                 <SearchContainer>
-                    <Search type='text' placeholder='영화 검색' onChange={(e) => {setKeywordClick(e.target.value)}} onKeyUp={(e) => {
+                    <Search type='text' placeholder='영화 검색' onChange={(e) => {setKeyword(e.target.value)}} onKeyPress={(e) => {
                         if(window.event.keyCode === 13) {
-                            setKeyword(e.target.value);
                             SearchMovie();
                         } 
                     }} />
                     <button>
                         <FontAwesomeIcon icon={faSearch} onClick={() => {
-                            setKeyword(keywordClick);
                             SearchMovie();
                         }} />
                     </button>

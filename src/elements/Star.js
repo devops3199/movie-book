@@ -8,10 +8,10 @@ import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
 
 
 const Star = (props) => {
-
   const [ rating, setRating ] = React.useState(null);
 
   const starClick = (e) => {
+    props.setReviewStar(e.target.value);
     setRating(e.target.value);
   };
 
@@ -19,16 +19,16 @@ const Star = (props) => {
     <React.Fragment>
       <Box>
         <Stars className="rating">
-          <input type="radio" id="star10" name="rating" value="10" onChange={starClick} /><label for="star10" class="full"></label>
-          <input type="radio" id="star9" name="rating" value="9" onChange={starClick} /><label for="star9" class="half"></label>
-          <input type="radio" id="star8" name="rating" value="8" onChange={starClick} /><label for="star8" class="full"></label>
-          <input type="radio" id="star7" name="rating" value="7" onChange={starClick} /><label for="star7" class="half"></label>
-          <input type="radio" id="star6" name="rating" value="6" onChange={starClick} /><label for="star6" class="full"></label>
-          <input type="radio" id="star5" name="rating" value="5" onChange={starClick} /><label for="star5" class="half"></label>
-          <input type="radio" id="star4" name="rating" value="4" onChange={starClick} /><label for="star4" class="full"></label>
-          <input type="radio" id="star3" name="rating" value="3" onChange={starClick} /><label for="star3" class="half"></label>
-          <input type="radio" id="star2" name="rating" value="2" onChange={starClick} /><label for="star2" class="full"></label>
-          <input type="radio" id="star1" name="rating" value="1" onChange={starClick} /><label for="star1" class="half"></label>
+          <input type="radio" id="star10" name="rating" value="10" onChange={starClick} /><label htmlFor="star10" className="full"></label>
+          <input type="radio" id="star9" name="rating" value="9" onChange={starClick} /><label htmlFor="star9" className="half"></label>
+          <input type="radio" id="star8" name="rating" value="8" onChange={starClick} /><label htmlFor="star8" className="full"></label>
+          <input type="radio" id="star7" name="rating" value="7" onChange={starClick} /><label htmlFor="star7" className="half"></label>
+          <input type="radio" id="star6" name="rating" value="6" onChange={starClick} /><label htmlFor="star6" className="full"></label>
+          <input type="radio" id="star5" name="rating" value="5" onChange={starClick} /><label htmlFor="star5" className="half"></label>
+          <input type="radio" id="star4" name="rating" value="4" onChange={starClick} /><label htmlFor="star4" className="full"></label>
+          <input type="radio" id="star3" name="rating" value="3" onChange={starClick} /><label htmlFor="star3" className="half"></label>
+          <input type="radio" id="star2" name="rating" value="2" onChange={starClick} /><label htmlFor="star2" className="full"></label>
+          <input type="radio" id="star1" name="rating" value="1" onChange={starClick} /><label htmlFor="star1" className="half"></label>
         </Stars>
         <Num>{rating}</Num>
       </Box>
