@@ -63,7 +63,7 @@ const getMovieDetail = (id) => {
     return async function(dispatch, getState, {history}){
         // Promise.then 
         const moiveApi = `http://13.209.47.134/api/movies/details/${id}`;
-        const commentApi = `http://13.209.47.134/api/movies/reviews/list/${id}`;
+        const commentApi = `http://13.209.47.134/api/movies/reviews/list/${id}?page=1`;
 
         const movie = await fetch(moiveApi).then(res => res.json());
         const comment = await fetch(commentApi).then(res => res.json());
@@ -86,7 +86,7 @@ export default handleActions({
 
     [SET_MOVIE_DETAIL] : (state, action) => produce(state, (draft) => {
         draft.detail = action.payload.movie;
-        draft.comment = action.payload.comment;
+        draft.comment = action.payload.comment.content;
     }),
 
     [SET_SEARCH_PAGE] : (state, action) => produce(state, (draft) => {
