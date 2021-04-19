@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Modal from "components/Modal";
 
 import { faStar as faStarFilled, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons"
 import { faStar as faStarHolo } from "@fortawesome/free-regular-svg-icons"
@@ -9,10 +10,18 @@ import Star from "elements/Star";
 
 const Review = (props) => {
 
-  const { date, rate, username, content, id } = props;
+  const { date, rate, username, content, id, is_me } = props;
   const star_fill = new Array(Math.floor(rate/2)).fill(0);
   const star_half_fill = new Array(rate % 2).fill(0);
   const star_holo = new Array(Math.floor((10 - rate) / 2)).fill(0);
+  const [ modalOpen, setModalOpen ] = React.useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  }
+  const closeModal = () => {
+    setModalOpen(false);
+  }
 
   return (
     <React.Fragment>
@@ -40,12 +49,47 @@ const Review = (props) => {
           <ReUser>
             <li>{username}</li>
             <li>{date}</li>
+            {props.is_me && 
+              <div>
+                <UpdateBtn onClick={ openModal }>수정</UpdateBtn>
+                <Modal open={ modalOpen } close={ closeModal } header="댓글 수정">
+
+                  <main> { props.children } </main> 이 곳에 내용 넣기
+                </Modal>
+              </div>}
+            {props.is_me && <UpdateBtn>삭제</UpdateBtn>}
           </ReUser>
         </ReWriting>
+        
       </ReviewBox>
     </React.Fragment>
   );
 }
+
+const UpdateBtn = styled.button`
+  border: 1px solid #fff;
+  // position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(238, 58, 88, 0);
+  border: 0;
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0.7);
+  width: 28px;
+  height: 20px;
+  margin: 0 0 0 2px;
+  padding: 0 0 3px 0;
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  &:hover {
+      transition: 0.2s;
+      border: 0;
+      background-color: rgba(238, 58, 88, 0.7);
+      color: rgba(255, 255, 255, 0.8);
+  }
+`;
 
 const Box = styled.div`
   margin: 0;
@@ -76,6 +120,7 @@ const Num = styled.div`
 `;
 
 const ReviewBox = styled.div`
+  position: relative;
   margin: 0;
   padding: 14px 0;
   width: 100%;
@@ -96,6 +141,7 @@ const ReWriting = styled.div`
   height: 100%;
   margin: 5px 0 0;
   max-width: 520px;
+  width: 100%;
 `;
 
 const P = styled.p`
@@ -104,13 +150,15 @@ const P = styled.p`
 `;
 
 const ReUser = styled.ul`
-  font-size:13px;
+  font-size: 13px;
   display: flex;
+  justify-content: flex-start;
   margin: 16px 0 5px;
   gap:5px;
   list-style-type: none;
   padding: 0;
   color: rgba(204, 204, 204, 0.5);
+  width: 100%;
   
   & li:nth-child(1)::after{
     content: '|';

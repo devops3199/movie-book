@@ -16,6 +16,18 @@ const MyMovieCard = (props) => {
 
     const dispatch = useDispatch();
 
+    const removeCheck = () => {
+        // 삭제 요청 재확인하기
+        if (window.confirm("내 영화 리스트에서 삭제하시겠습니까?") == true){    
+            //확인
+            dispatch(myMovieActions.deleteMovieAPI(props.cid))
+
+        }else{   
+            //취소
+            return false;
+        }
+    }
+
     return (
         <CardBox onClick={_onClick}>
             <Image {...styles}>
@@ -38,7 +50,7 @@ const MyMovieCard = (props) => {
             <DelBtn onClick={(e)=>{
                 e.preventDefault();
                 e.stopPropagation();
-                dispatch(myMovieActions.deleteMovieAPI(props.cid))
+                removeCheck();
             }}>삭제</DelBtn>
         </CardBox>
     );
