@@ -116,11 +116,16 @@ const Detail = (props) => {
         </ReviewBox>
 
         {movie_comment.map((val, index) => {
-          if(val.user?.u_id === user_info?.u_id){
-            return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} is_me />
-          } else {
-            return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} />
+          if(val.user?.u_id === undefined) { 
+            return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} /> 
+          } else { 
+            if(val.user?.u_id === user_info?.u_id) { 
+              return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} is_me /> 
+            } else { 
+              return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} /> 
+            } 
           }
+          
         })}
         <PaginationContainer>
           {pages.map((val, index) => {
