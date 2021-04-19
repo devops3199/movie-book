@@ -11,14 +11,14 @@ const initialState = {
 
 const getCollection = () => {
     return async function(dispatch, getState, {history}){
-        const users = [1, 1, 1, 1]; // user id
+        const users = [31, 28, 1, 32]; // user id
         let user_collection = {};
 
         // forEach does not support async await
         for(let i = 0; i < users.length; i++) {
             const api = `http://13.209.47.134/api/collections/list/${users[i]}`;
             const result = await fetch(api).then(res => res.json());
-            let user_name = result[0].user.name + i; // 임시
+            let user_name = result[0].user.name; // 임시
             let temp = { [user_name] : result };
             user_collection = {...user_collection, ...temp};
         }
