@@ -22,7 +22,6 @@ const Login = (props) => {
     }
     
     dispatch(userActions.loginAPI(email,pw));
-    // history.push('/')
   }
 
   return (

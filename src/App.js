@@ -1,16 +1,22 @@
 import React from 'react';
 import 'App.css';
 import { Route } from 'react-router-dom';
+import { useDispatch } from "react-redux";
 import { ConnectedRouter } from 'connected-react-router';
 import { history } from 'redux/configureStore';
 import NavBar from 'components/NavBar';
 import { Login, Register, Main, Detail, Result, MyMovie } from 'pages/page';
 import styled from 'styled-components';
+import {actionCreators as userActions} from "redux/modules/user";
 
 const App = (props) => {
+  const dispatch = useDispatch();
+  const is_login = localStorage.getItem('token')? true : false ;
 
   React.useEffect(() => {
-    //로그인 체크
+    if(is_login){
+      dispatch(userActions.isLogin());
+    }
   }, []);
 
   return (
@@ -24,6 +30,7 @@ const App = (props) => {
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
             <Route path="/detail/:id" exact component={Detail} />
+            <Route path="/mymovie" exact component={MyMovie} />
             <Route path="/result" exact component={Result} />
           </ConnectedRouter>
         </Container>

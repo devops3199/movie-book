@@ -2,26 +2,39 @@ import React from 'react';
 import styled from 'styled-components';
 import MyMovieCard from 'components/MyMovieCard';
 import { useSelector, useDispatch } from 'react-redux';
+import { actionCreators as userActions } from 'redux/modules/user';
 import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
+import Permit from "shared/Permit";
 
 const MyMovie = () => {
 
   const dispatch = useDispatch();
-  const user_info = useSelector((state) => state.user.user);
-  
+  const has_token = localStorage.getItem('token');
+  const user_info = JSON.parse(localStorage.getItem("userInfo"))
+  const movie_list = useSelector((state) => state.mymovie.list);
 
-//   React.useEffect(() => {
-//     dispatch(myMovieActions.getMovieAPI(u_id));
-//   }, []);
+  React.useEffect(() => {
+
+    if (!has_token) {
+      console.log("nope");
+      return false;
+    } 
+    
+    dispatch(myMovieActions.getMovieAPI(user_info.u_id));
+
+  }, []);
 
   return (
-    <Wrap>
-      <Title>내 영화 리스트</Title>
-      <CardBox>
-        <MyMovieCard/>
-        <MyMovieCard/>
-      </CardBox>
-    </Wrap>
+    <Permit>
+      <Wrap>
+        <Title>내 영화 리스트</Title>
+        <CardBox>
+            {movie_list.map((m, idx) => {
+                return <MyMovieCard key={idx} {...m} />;
+            })}
+        </CardBox>
+        </Wrap>
+    </Permit>
   )
 }
 
