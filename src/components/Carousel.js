@@ -20,10 +20,14 @@ const Carousel = (props) => {
         slider.style.left = (-100 * index) + '%'; // 좌측으로 이동
         setCurrentIndex(index);
 
+        console.log(index, lastIndex, 'anj');
+
         // 버튼 활성화 설정
         if(index === lastIndex-1) {
             next.current.style.display = 'none';
+            prev.current.style.display = 'flex';
         } else if (index === 0) {
+            next.current.style.display = 'flex';
             prev.current.style.display = 'none';
         } else {
             next.current.style.display = 'flex';

@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { faStar } from "@fortawesome/free-solid-svg-icons"
+import { faStar as faStarFilled, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons"
+import { faStar as faStarHolo } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Star from "elements/Star";
@@ -9,6 +10,9 @@ import Star from "elements/Star";
 const Review = (props) => {
 
   const { date, rate, username, content, id } = props;
+  const star_fill = new Array(Math.floor(rate/2)).fill(0);
+  const star_half_fill = new Array(rate % 2).fill(0);
+  const star_holo = new Array(Math.floor((10 - rate) / 2)).fill(0);
 
   return (
     <React.Fragment>
@@ -16,20 +20,23 @@ const Review = (props) => {
         <ReStarBox>
           <Box>
             <Stars>
-              {/* <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} /> */}
-              <Star rate={rate} id={id} />
+              {star_fill.map((val, index) => {
+                return <FontAwesomeIcon key={index} icon={faStarFilled} />;
+              })}
+
+              {star_half_fill.map((val, index) => {
+                return <FontAwesomeIcon key={index} icon={faStarHalfAlt} />;
+              })}
+
+              {star_holo.map((val, index) => {
+                return <FontAwesomeIcon key={index} icon={faStarHolo} />;
+              })}
             </Stars>
             <Num>{rate}</Num>
           </Box>
         </ReStarBox>
         <ReWriting>
-          <P>
-            {content}
-          </P>
+          <P>{content}</P>
           <ReUser>
             <li>{username}</li>
             <li>{date}</li>
@@ -37,7 +44,7 @@ const Review = (props) => {
         </ReWriting>
       </ReviewBox>
     </React.Fragment>
-  )
+  );
 }
 
 const Box = styled.div`
