@@ -8,6 +8,7 @@ import { actionCreators as movieActions } from 'redux/modules/movie';
 
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Logo from 'media/movie_book.png';
 
 const NavBar = (props) => {
 
@@ -27,7 +28,9 @@ const NavBar = (props) => {
             <LogoContiner>
                 <span onClick={() => {
                     history.push('/');
-                }}>MovieBook</span>
+                }}>
+                    <img src={Logo} width='180px' />
+                </span>
             </LogoContiner>
             <ContentContainer>
                 <SearchContainer>
@@ -76,7 +79,7 @@ const Navbar = styled.nav`
     align-items: center;
     justify-content: space-between;
     max-width: 1400px;
-    height: 70px;
+    height: 80px;
     margin: 0 auto;
 `;
 

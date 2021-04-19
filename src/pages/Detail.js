@@ -16,10 +16,17 @@ const Detail = (props) => {
   const dispatch = useDispatch();
 
   const movie_detail = useSelector((state) => state.movie.detail);
-  const movie_comment = useSelector((state) => state.movie.comment);
+  const movie_comment = useSelector((state) => state.movie.comment.list);
+  const comment_pages = useSelector((state) => state.movie.comment.total_page);
+  const pages = new Array(comment_pages).fill(0);
 
   const [reviewContent, setReviewContent] = React.useState(null);
   const [reviewStar, setReviewStar] = React.useState(null);
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  const GetPage = (e) => {
+    setCurrentPage(parseInt(e.target.text));
+  }; 
 
   const makeReview = () => {
     if(reviewContent === null && reviewStar === null) {
@@ -54,6 +61,10 @@ const Detail = (props) => {
     dispatch(movieActions.getMovieDetail(id));
     window.scrollTo(0, 0);
   }, []);
+
+  React.useEffect(() => {
+    dispatch(movieActions.getMovieComment(id, currentPage));
+  }, [currentPage]);
 
   return(
       <Wrap>
@@ -92,8 +103,20 @@ const Detail = (props) => {
         </ReviewBox>
 
         {movie_comment.map((val, index) => {
-          return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.username} content={val.content} />
+          return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} />
         })}
+        <PaginationContainer>
+          {pages.map((val, index) => {
+            let name = `pagination_${index + 1}`;
+            return (
+              <Pagination key={index}>
+                <a className={name} onClick={GetPage}>
+                  {index + 1}
+                </a>
+              </Pagination>
+            );
+          })}
+        </PaginationContainer>
       </Wrap>
   )
 }
@@ -221,12 +244,6 @@ const Actor = styled.p`
   padding: 0;
 `;
 
-const Genre = styled.p`
-  font-size: 1rem;
-  margin: 0;
-  padding: 0;
-`;
-
 const MyListBtn = styled.button`
   border: 0;
   border-radius: 4px;
@@ -299,6 +316,28 @@ const ReviewArea = styled.textarea`
   width: 100%;
   height: 70px;
   padding: 10px;
+`;
+
+const PaginationContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Pagination = styled.span`
+  width: 1.75rem;
+  height: 1.75rem;
+  text-align: center;
+  background-color: #ee3a57;
+  border: 1px solid #ee3a57;
+  border-radius: 5px;
+  margin: 0 0.5rem;
+  & a {
+    width: 100%;
+    height: 100%;
+    cursor: pointer
+  }
 `;
 
 export default Detail;

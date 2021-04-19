@@ -8,7 +8,7 @@ import Star from "elements/Star";
 
 const Review = (props) => {
 
-  const { date, rate, username, content } = props;
+  const { date, rate, username, content, id } = props;
 
   return (
     <React.Fragment>
@@ -16,11 +16,12 @@ const Review = (props) => {
         <ReStarBox>
           <Box>
             <Stars>
+              {/* <FontAwesomeIcon icon={faStar} />
               <FontAwesomeIcon icon={faStar} />
               <FontAwesomeIcon icon={faStar} />
               <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} />
-              <FontAwesomeIcon icon={faStar} />
+              <FontAwesomeIcon icon={faStar} /> */}
+              <Star rate={rate} id={id} />
             </Stars>
             <Num>{rate}</Num>
           </Box>

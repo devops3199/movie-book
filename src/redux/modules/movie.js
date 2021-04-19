@@ -23,7 +23,10 @@ const initialState = {
         content: [],
         last: false,
     },
-    comment : [],
+    comment : {
+        list: [],
+        total_page : 1,
+    },
     detail : {},
     search_page : 0,
     keyword : '',
@@ -50,7 +53,10 @@ const addComment = (comment) => {
             })
         })
             .then(res => res.text())
-            .then(data => alert(data))
+            .then(data => {
+                alert(data);
+                dispatch(getMovieDetail(comment.m_id));
+            })
             .catch(err => console.log(err, "addComment"));
         }
     }
@@ -122,10 +128,17 @@ const getMovieDetail = (id) => {
 
         const movie = await fetch(moiveApi).then(res => res.json());
         const comment = await fetch(commentApi).then(res => res.json());
-
         dispatch(setMovieDetail(movie, comment));
     }
 };
+
+const getMovieComment = (id, page) => {
+    return async function(dispatch, getState, {history}){
+        const commentApi = `http://13.209.47.134/api/movies/reviews/list/${id}?page=${page}`;
+        const comment = await fetch(commentApi).then(res => res.json());
+        dispatch(setComment(comment));
+    }
+}
 
 export default handleActions({
     [SET_MOVIE_TODAY] : (state, action) => produce(state, (draft) => {
@@ -135,7 +148,6 @@ export default handleActions({
     }),
 
     [SET_MOVIE_SEARCH] : (state, action) => produce(state, (draft) => {
-        console.log(action.payload.movie,'called');
         if(action.payload.movie.first){
             draft.search.content = action.payload.movie.content;
         } else {
@@ -146,7 +158,8 @@ export default handleActions({
 
     [SET_MOVIE_DETAIL] : (state, action) => produce(state, (draft) => {
         draft.detail = action.payload.movie;
-        draft.comment = action.payload.comment.content;
+        draft.comment.list = action.payload.comment.content;
+        draft.comment.total_page = action.payload.comment.totalPages;
     }),
 
     [SET_SEARCH_PAGE] : (state, action) => produce(state, (draft) => {
@@ -163,8 +176,9 @@ export default handleActions({
     }),
 
     [SET_COMMENT] : (state, action) => produce(state, (draft) => {
-        
+        draft.comment.list = action.payload.comment.content;
     }),
+
 }, initialState);
 
 const actionCreators = {
@@ -175,6 +189,7 @@ const actionCreators = {
     setSearchPage,
     clearSearchPage,
     setKeyword,
+    getMovieComment,
     addComment,
 };
   
