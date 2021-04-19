@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import 'Star.css';
 
 const Star = (props) => {
-  const { rate, id } = props;
+  const { setReviewStar } = props;
   const [ rating, setRating ] = React.useState(0);
-  const rate10 = React.useRef();
 
   const starClick = (e) => {
     setRating(e.target.value);
+    setReviewStar(e.target.value);
   };
 
   return (
