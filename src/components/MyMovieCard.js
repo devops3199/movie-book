@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
 
 const MyMovieCard = (props) => {
-    const { url, title, year, rate, director, actor1, actor2, actor3, description } = props;
+    const { url, title, year, rate, director, actor1, actor2, actor3, description, _onClick } = props;
 
     const styles = {
         url : url,
@@ -17,7 +17,7 @@ const MyMovieCard = (props) => {
     const dispatch = useDispatch();
 
     return (
-        <CardBox>
+        <CardBox onClick={_onClick}>
             <Image {...styles}>
             </Image>
 
