@@ -5,6 +5,7 @@ import { connectRouter } from "connected-react-router";
 
 import user from 'redux/modules/user';
 import movie from 'redux/modules/movie';
+import mymovie from 'redux/modules/mymovie';
 import collection from 'redux/modules/collection';
 
 export const history = createBrowserHistory();
@@ -12,6 +13,7 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
     user : user,
     movie : movie,
+    mymovie : mymovie,
     collection : collection,
     router: connectRouter(history),
 });

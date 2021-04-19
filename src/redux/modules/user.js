@@ -55,9 +55,7 @@ const loginAPI = (email, pw) => {
       })
     })
     .then((result) => {
-    
       console.log(result);
-      // let userInfo = result.json();
       
       //성공시 토큰, 유저 정보 저장
       if (result.status === 200) {
@@ -73,16 +71,21 @@ const loginAPI = (email, pw) => {
     })
     .then(result => {
       console.log(result);
-      localStorage.setItem('userInfo', JSON.stringify(result));
-      dispatch(setUser({
-        uid: result.u_id,
-        name: result.name,
-      }))
+      if (result) {
+        localStorage.setItem('userInfo', JSON.stringify(result));
+        dispatch(setUser({
+          uid: result.u_id,
+          name: result.name,
+        }))
+        history.push('/');
+      } else {
+        window.alert('로그인에 실패했습니다.');
+      }
     })
     .catch((error) => {
     console.log(error);
     });
-    history.push('/');
+    
   }
 };
 
@@ -105,9 +108,8 @@ const isLogin = () => {
       return false;
     }
     dispatch(setUser({
-      uid: userInfo.uid,
+      uid: userInfo.u_id,
       name: userInfo.name,
-      address: userInfo.address,
     }));
   }
 }

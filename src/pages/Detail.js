@@ -8,12 +8,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Star from "elements/Star";
 import Review from "components/Review";
 
+import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
 import { actionCreators as movieActions } from 'redux/modules/movie';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Detail = (props) => {
   const id = props.match.params.id;
   const dispatch = useDispatch();
+  const has_token = localStorage.getItem('token');
 
   const movie_detail = useSelector((state) => state.movie.detail);
   const movie_comment = useSelector((state) => state.movie.comment.list);
@@ -54,7 +56,14 @@ const Detail = (props) => {
   };
 
   const addCollection = () => {
-    console.log('리스트 추가');
+    if (!has_token) {
+      alert('로그인이 필요합니다!');
+      console.log("nope");
+      return false;
+    } 
+
+    dispatch(myMovieActions.addMovieAPI(movie_detail.m_id));
+    console.log('리스트 추가 완료');
   };
   
   React.useEffect(() => {

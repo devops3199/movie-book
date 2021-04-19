@@ -15,7 +15,13 @@ const NavBar = (props) => {
     const dispatch = useDispatch();
 
     const is_login = useSelector((state) => state.user.is_login);
-    const userInfo = useSelector((state) => state.user.user);
+
+    React.useEffect(() => {
+   
+        dispatch(userActions.isLogin());
+
+    }, []);
+
     const [keyword, setKeyword] = React.useState('');
     
     const SearchMovie = () => {
@@ -24,7 +30,7 @@ const NavBar = (props) => {
     };
 
     return (
-        <Navbar>
+        <Navbar className="header">
             <LogoContiner>
                 <span onClick={() => {
                     history.push('/');
@@ -61,7 +67,7 @@ const NavBar = (props) => {
                     <React.Fragment>
                         <ButtonContainer>
                             <button onClick={() => {
-                                history.push('/');
+                                history.push('/mymovie');
                             }}>내 영화</button>
                             <button onClick={() => {
                                 dispatch(userActions.logout({}));

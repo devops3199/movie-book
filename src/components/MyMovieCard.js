@@ -4,16 +4,21 @@ import styled from 'styled-components';
 import { faStar } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
+import { useSelector, useDispatch } from 'react-redux';
+import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
+
 const MyMovieCard = (props) => {
     const { url, title, year, rate, director, actor1, actor2, actor3, description } = props;
 
-    // const styles = {
-        
-    // };
+    const styles = {
+        url : url,
+    };
+
+    const dispatch = useDispatch();
 
     return (
         <CardBox>
-            <Image>
+            <Image {...styles}>
             </Image>
 
             <Info>
@@ -30,6 +35,11 @@ const MyMovieCard = (props) => {
                 </Info2>
                 
             </Info>
+            <DelBtn onClick={(e)=>{
+                e.preventDefault();
+                e.stopPropagation();
+                dispatch(myMovieActions.deleteMovieAPI(props.cid))
+            }}>삭제</DelBtn>
         </CardBox>
     );
 };
@@ -47,8 +57,8 @@ MyMovieCard.defaultProps = {
 };
 
 const CardBox = styled.div`
-    width: 670px;
-    height : 250px;
+    width: 700px;
+    height : 280px;
     display: flex;
     justify-content: flex-start;
     margin: 0 auto 20px;
@@ -61,19 +71,17 @@ const CardBox = styled.div`
 
     &:hover {
         transition: 0.2s;
-        width: 700px;
-        height : 280px;
-        // background-color: transparent;
+        transform: scale(1.05);
+
     }
     &:not(hover) {
         transition: 0.2s;
-        width: 670px;
-        height : 250px;
+
     }
 `;
 
 const Image = styled.div`
-    background-image: url('https://movie-phinf.pstatic.net/20210308_97/1615182990261ekXlL_JPEG/movie_image.jpg');
+    background-image: url(${(props) => props.url});
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -83,7 +91,7 @@ const Image = styled.div`
     border-bottom-left-radius: 3px;
     width: 180px;
     height: 100%;
-    filter: brightness(0.94);
+    filter: brightness(0.9);
     &:hover {
         transition: 0.2s;
         filter: brightness(1);
@@ -95,7 +103,7 @@ const Info = styled.div`
     width: 100%;
     max-width: 516px;
     height: 100%;
-    max-height: 240px;
+    max-height: 264px;
     padding: 10px 20px;
     overflow: hidden;
 `;
@@ -129,7 +137,8 @@ const StarOne = styled.div`
 const Info2 = styled.div`
     // border: 1px solid green;
     width: 100%;
-    height: 170px;
+    height: 186px;
+    margin-top: 3px;
     display: flex;
     flex-direction: column;
     font-size: 0.82rem;
@@ -139,7 +148,29 @@ const Info2 = styled.div`
 
 const Desc = styled.span`
     margin-top: 10px;
-    
+`;
+
+const DelBtn = styled.button`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(238, 58, 88, 0);
+    border: 1px solid rgba(238, 58, 88, 0.6);
+    border-radius: 3px;
+    color: rgba(255, 255, 255, 0.9);
+    width: 46px;
+    height: 28px;
+    margin: 0;
+    padding: 0 0 1.5px 0;
+    font-size: 0.74rem;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    &:hover {
+        transition: 0.2s;
+        border: 0;
+        background-color: rgba(238, 58, 88, 0.9);
+    }
 `;
 
 export default MyMovieCard;
