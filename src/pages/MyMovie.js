@@ -6,9 +6,10 @@ import { actionCreators as userActions } from 'redux/modules/user';
 import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
 import Permit from "shared/Permit";
 
-const MyMovie = () => {
+const MyMovie = (props) => {
 
   const dispatch = useDispatch();
+  const {history} = props;
   const has_token = localStorage.getItem('token');
   const user_info = JSON.parse(localStorage.getItem("userInfo"))
   const movie_list = useSelector((state) => state.mymovie.list);
@@ -30,7 +31,7 @@ const MyMovie = () => {
         <Title>내 영화 리스트</Title>
         <CardBox>
             {movie_list.map((m, idx) => {
-                return <MyMovieCard key={idx} {...m} />;
+                return <MyMovieCard _onClick={() => {history.push(`/detail/${m.mid}`);}} key={idx} {...m} />;
             })}
         </CardBox>
         </Wrap>

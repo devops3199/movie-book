@@ -30,6 +30,7 @@ const getMovieAPI = (uid) => {
         let movie_list = [];
         res.forEach((m) => {
           let movie = {
+            mid: m.movie.m_id,
             cid: m.c_id,
             url: m.movie.image_url,
             title: m.movie.title,
@@ -41,7 +42,7 @@ const getMovieAPI = (uid) => {
             actor3: m.movie.actor3,
             description: m.movie.description,
           }
-          
+
           movie_list.push(movie);
         });
         dispatch(setMovie(movie_list));
