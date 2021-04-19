@@ -10,12 +10,16 @@ import Review from "components/Review";
 
 import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
 import { actionCreators as movieActions } from 'redux/modules/movie';
+import { actionCreators as userActions } from 'redux/modules/user';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Detail = (props) => {
   const id = props.match.params.id;
   const dispatch = useDispatch();
   const has_token = localStorage.getItem('token');
+  const user_info = JSON.parse(localStorage.getItem("userInfo"));
+  // const user_info = useSelector((state) => state.user.uid);
+  // console.log(user_info.u_id);
 
   const movie_detail = useSelector((state) => state.movie.detail);
   const movie_comment = useSelector((state) => state.movie.comment.list);
@@ -112,7 +116,11 @@ const Detail = (props) => {
         </ReviewBox>
 
         {movie_comment.map((val, index) => {
-          return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} />
+          if(val.user?.u_id === user_info?.u_id){
+            return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} is_me />
+          } else {
+            return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} />
+          }
         })}
         <PaginationContainer>
           {pages.map((val, index) => {

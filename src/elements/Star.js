@@ -9,7 +9,7 @@ import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
 
 const Star = (props) => {
   const { rate, id } = props;
-  const [ rating, setRating ] = React.useState(null);
+  const [ rating, setRating ] = React.useState(0);
   const rate10 = React.useRef();
 
   const starClick = (e) => {
