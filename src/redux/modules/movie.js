@@ -8,6 +8,8 @@ const SET_SEARCH_PAGE = "SET_SEARCH_PAGE";
 const SET_KEYWORD = "SET_KEYWORD";
 const SET_COMMENT = "SET_COMMENT";
 const CLEAR_SEARCH_PAGE = "CLEAR_SEARCH_PAGE";
+const EDIT_COMMENT = "EDIT_COMMENT";
+const DELETE_COMMENT = "EDIT_COMMENT";
 
 const setMovieToday = createAction(SET_MOVIE_TODAY, (movie) => ({movie}));
 const setMovieSearch = createAction(SET_MOVIE_SEARCH, (movie) => ({movie}));
@@ -16,6 +18,8 @@ const setSearchPage = createAction(SET_SEARCH_PAGE, (page) => ({page}));
 const setKeyword = createAction(SET_KEYWORD, (keyword) => ({keyword}));
 const setComment = createAction(SET_COMMENT, (comment) => ({comment}));
 const clearSearchPage = createAction(CLEAR_SEARCH_PAGE, () => ({}));
+const editComment = createAction(EDIT_COMMENT, (r_id, comment) => ({r_id, comment}));
+const deleteComment = createAction(DELETE_COMMENT, (r_id) => ({r_id}));
 
 const initialState = {
     list : [],
@@ -31,36 +35,6 @@ const initialState = {
     search_page : 0,
     keyword : '',
 };
-
-const addComment = (comment) => {
-    return function(dispatch, getState, {history}){
-        const token = localStorage.getItem("token");
-        const api = `http://13.209.47.134/api/movies/reviews/authentication/${comment.m_id}`;
-
-        if(!token){
-            alert('로그인을 먼저 해주세요!');
-        } else {
-        fetch(api, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': token,
-            },
-            body: JSON.stringify({
-                rate : comment.rate,
-                content : comment.content,
-            })
-        })
-            .then(res => res.text())
-            .then(data => {
-                alert(data);
-                dispatch(getMovieDetail(comment.m_id));
-            })
-            .catch(err => console.log(err, "addComment"));
-        }
-    }
-}
 
 const getMoiveToday = () => {
     return function(dispatch, getState, {history}){
@@ -140,6 +114,93 @@ const getMovieComment = (id, page) => {
     }
 }
 
+const addComment = (comment) => {
+    return function(dispatch, getState, {history}){
+        const token = localStorage.getItem("token");
+        const api = `http://13.209.47.134/api/movies/reviews/authentication/${comment.m_id}`;
+
+        if(!token){
+            alert('로그인을 먼저 해주세요!');
+        } else {
+        fetch(api, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': token,
+            },
+            body: JSON.stringify({
+                rate : comment.rate,
+                content : comment.content,
+            })
+        })
+            .then(res => res.text())
+            .then(data => {
+                alert(data);
+                dispatch(getMovieDetail(comment.m_id));
+                // window.location.reload();
+            })
+            .catch(err => console.log(err, "addComment"));
+        }
+    }
+}
+
+const editCommentAPI = (comment) => {
+    return function (dispatch, getState, { history }) {
+        const token = localStorage.getItem('token');
+        
+        if (!token || !comment) {
+            return false;
+        }
+
+        const API = `http://13.209.47.134/api/movies/reviews/authentication/${comment.r_id}`;
+        fetch(API, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': token,
+            },
+            body: JSON.stringify({
+                rate : comment.rate,
+                content : comment.content,
+            })
+        })
+        .then((res) => res.text())
+        .then((result) => {
+            alert(result);
+            window.location.reload();
+        });
+    }
+}
+
+const deleteCommentAPI = (r_id, m_id) => {
+  return function (dispatch, getState, { history }) {
+    
+    const token = localStorage.getItem('token');
+
+    if (!r_id || !token) {
+      return false;
+    }
+
+    const API = `http://13.209.47.134/api/movies/reviews/authentication/${r_id}`;
+    fetch(API, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token,
+      }
+    })
+    .then((res) => res.text())
+    .then((result) => {
+        alert(result);
+        dispatch(deleteComment(r_id))
+        window.location.reload();
+    });
+  }
+}
+
 export default handleActions({
     [SET_MOVIE_TODAY] : (state, action) => produce(state, (draft) => {
         let temp = action.payload.movie.slice(0, 7);
@@ -179,6 +240,11 @@ export default handleActions({
         draft.comment.list = action.payload.comment.content;
     }),
 
+    [DELETE_COMMENT]: (state, action) => produce(state, (draft) => {
+      let idx = draft.list.findIndex((c)=>c.r_id === action.payload.r_id)
+      draft.list.splice(idx, 1);
+    }),
+
 }, initialState);
 
 const actionCreators = {
@@ -191,6 +257,10 @@ const actionCreators = {
     setKeyword,
     getMovieComment,
     addComment,
+    editComment,
+    deleteComment,
+    editCommentAPI,
+    deleteCommentAPI,
 };
   
 export { actionCreators };

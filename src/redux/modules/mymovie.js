@@ -69,7 +69,7 @@ const addMovieAPI = (mid =null) => {
     })
     .then((res) => res.text())
     .then((result) => {
-      console.log(result);
+      // console.log(result);
       alert(result);
     });
   }
