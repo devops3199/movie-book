@@ -1,13 +1,19 @@
 import React from 'react';
+
 import 'App.css';
-import { Route } from 'react-router-dom';
-import { useDispatch } from "react-redux";
-import { ConnectedRouter } from 'connected-react-router';
-import { history } from 'redux/configureStore';
-import NavBar from 'components/NavBar';
-import { Login, Register, Main, Detail, Result, MyMovie } from 'pages/page';
 import styled from 'styled-components';
 import Logo from 'media/movie_book.png';
+
+import { ConnectedRouter } from 'connected-react-router';
+import { Route, Switch } from 'react-router-dom';
+
+import { useDispatch } from "react-redux";
+import { history } from 'redux/configureStore';
+
+import { Login, Register, Main, Detail, Result, MyMovie } from 'pages/page';
+import NavBar from 'components/NavBar';
+import NotFound from 'shared/NotFound';
+
 import {actionCreators as userActions} from "redux/modules/user";
 
 const App = (props) => {
@@ -31,12 +37,15 @@ const App = (props) => {
       </Header>
         <Container>
           <ConnectedRouter history={history}>
-            <Route path="/" exact component={Main} />
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
-            <Route path="/detail/:id" exact component={Detail} />
-            <Route path="/mymovie" exact component={MyMovie} />
-            <Route path="/result" exact component={Result} />
+            <Switch>
+              <Route path="/" exact component={Main} />
+              <Route path="/login" exact component={Login} />
+              <Route path="/register" exact component={Register} />
+              <Route path="/detail/:id" exact component={Detail} />
+              <Route path="/mymovie" exact component={MyMovie} />
+              <Route path="/result" exact component={Result} />
+              <Route component={NotFound} />
+            </Switch>
           </ConnectedRouter>
         </Container>
       <Footer>
@@ -96,7 +105,7 @@ const Footer = styled.footer`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 180px;
+  height: 150px;
   background-color: #1a1f3f;
 `;
 const FooterContainer = styled.div`

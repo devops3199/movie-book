@@ -52,8 +52,8 @@ const Rank = styled.div`
     position: absolute;
     top: 6px;
     left: 6px;
-    width: ${(props) => (props.name === 'main' ? '50px;' : '25px;')};
-    height: ${(props) => (props.name === 'main' ? '50px;' : '25px;')};
+    width: ${(props) => (props.name === 'main' ? '50px' : '25px')};
+    height: ${(props) => (props.name === 'main' ? '50px' : '25px')};
     background-color: #ee3a57;
     border-radius: 5px;
     display: flex;
@@ -68,7 +68,7 @@ const Rank = styled.div`
 
 const TitleBackground = styled.div`
     position: absolute;
-    bottom: -10%;
+    bottom: ${(props) => (props.name === 'main' ? '-5%' : '-10%')};
     height: 15%;
     width: 100%;
     background-color: rgba(57, 50, 50, .85);
@@ -81,12 +81,12 @@ const TitleBackground = styled.div`
     transition: bottom .5s, opacity .3s;
 
     & span {
-        font-size: ${(props) => (props.name === 'main' ? '2.5rem;' : '1.1rem;')};
+        font-size: ${(props) => (props.name === 'main' ? '1.5rem' : '.9rem')};
         font-weight: 700;
         margin: 0 1rem;
 
         @media only screen and (max-width: 1300px) {
-            font-size: ${(props) => (props.name === 'main' ? '1.1rem;' : '.7rem;')};
+            font-size: ${(props) => (props.name === 'main' ? '1.1rem' : '.7rem')};
         }
     }
 

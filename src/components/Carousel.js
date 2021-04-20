@@ -4,7 +4,7 @@ import { Previous, Next } from 'media/Svg';
 import MoiveCard from 'components/MovieCard';
 
 const Carousel = (props) => {
-    const slide_content = props.list
+    const slide_content = props.list;
     const lastIndex = Math.ceil(props.list.length/4);
     const slide_temp = new Array(lastIndex).fill(0);
 
@@ -36,6 +36,9 @@ const Carousel = (props) => {
     };
 
     React.useEffect(() => {
+        if(slide_content.length < 5) {
+            next.current.style.display = 'none';
+        }
         prev.current.style.display = 'none';
     }, []);
 
@@ -123,11 +126,17 @@ const PrevContainer = styled.div`
     justify-content: center;
     background-color: #ee3a57;
     border-radius: 10px;
+    opacity: 0;
+    transition: opacity .3s;
 
     & svg {
         fill: #fff;
         width: 1.5rem;
         height: 1.5rem;
+    }
+
+    ${CarouselContainer}:hover & {
+        opacity: 1;
     }
 `;
 
@@ -144,11 +153,17 @@ const NextContainer = styled.div`
     justify-content: center;
     background-color: #ee3a57;
     border-radius: 10px;
+    opacity: 0;
+    transition: opacity .3s;
 
     & svg {
         fill: #fff;
         width: 1.5rem;
         height: 1.5rem;
+    }
+
+    ${CarouselContainer}:hover & {
+        opacity: 1;
     }
 `;
 

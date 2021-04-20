@@ -40,7 +40,7 @@ const Main = (props) => {
                 return(
                     <React.Fragment key={index}>
                         <Title>
-                            <h3>{val[0]}님의 영화 리스트</h3>
+                            <h3>{val[0]}님의 영화 리스트 ({val[1].length}편)</h3>
                         </Title>
                         <Carousel list={val[1]} history={history} />
                     </React.Fragment>

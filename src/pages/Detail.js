@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Star from "elements/Star";
 import Review from "components/Review";
+import Loading from 'shared/Loading';
 
 import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
 import { actionCreators as movieActions } from 'redux/modules/movie';
@@ -20,7 +21,8 @@ const Detail = (props) => {
   const user_info = JSON.parse(localStorage.getItem("userInfo"));
   // const user_info = useSelector((state) => state.user.uid);
   // console.log(user_info.u_id);
-
+  
+  const is_loading = useSelector((state) => state.movie.loading.detail_page);
   const movie_detail = useSelector((state) => state.movie.detail);
   const movie_comment = useSelector((state) => state.movie.comment.list);
   const comment_pages = useSelector((state) => state.movie.comment.total_page);
@@ -29,6 +31,7 @@ const Detail = (props) => {
   const [reviewContent, setReviewContent] = React.useState(null);
   const [reviewStar, setReviewStar] = React.useState(null);
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [prevPage, setPrevPage] = React.useState('pagination_1');
 
   const GetPage = (e) => {
     setCurrentPage(parseInt(e.target.text));
@@ -81,6 +84,8 @@ const Detail = (props) => {
 
   return(
       <Wrap>
+        {is_loading ? (<Loading />) : (
+          <>
         <MovieImg url={movie_detail.image_url}></MovieImg>
         <TitleBox>
           <Title>{movie_detail.title}</Title>
@@ -132,13 +137,14 @@ const Detail = (props) => {
             let name = `pagination_${index + 1}`;
             return (
               <Pagination key={index}>
-                <a className={name} onClick={GetPage}>
+                <PageNum className={name} onClick={GetPage}>
                   {index + 1}
-                </a>
+                </PageNum>
               </Pagination>
             );
           })}
         </PaginationContainer>
+        </>)}
       </Wrap>
   )
 }
@@ -348,18 +354,18 @@ const PaginationContainer = styled.div`
 `;
 
 const Pagination = styled.span`
-  width: 1.75rem;
-  height: 1.75rem;
   text-align: center;
-  background-color: #ee3a57;
-  border: 1px solid #ee3a57;
-  border-radius: 5px;
   margin: 0 0.5rem;
-  & a {
-    width: 100%;
-    height: 100%;
-    cursor: pointer
-  }
+  cursor: pointer;
+`;
+
+const PageNum = styled.a`
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  padding: .2rem .7rem;
+  background-color: #ee3a57;
+  border-radius: 5px;
 `;
 
 export default Detail;

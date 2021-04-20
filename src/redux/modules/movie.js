@@ -8,6 +8,7 @@ const SET_SEARCH_PAGE = "SET_SEARCH_PAGE";
 const SET_KEYWORD = "SET_KEYWORD";
 const SET_COMMENT = "SET_COMMENT";
 const CLEAR_SEARCH_PAGE = "CLEAR_SEARCH_PAGE";
+const SET_LOADING = "SET_LOADING";
 
 const setMovieToday = createAction(SET_MOVIE_TODAY, (movie) => ({movie}));
 const setMovieSearch = createAction(SET_MOVIE_SEARCH, (movie) => ({movie}));
@@ -16,6 +17,7 @@ const setSearchPage = createAction(SET_SEARCH_PAGE, (page) => ({page}));
 const setKeyword = createAction(SET_KEYWORD, (keyword) => ({keyword}));
 const setComment = createAction(SET_COMMENT, (comment) => ({comment}));
 const clearSearchPage = createAction(CLEAR_SEARCH_PAGE, () => ({}));
+const setLoading = createAction(SET_LOADING, (loading, page) => ({loading, page}));
 
 const initialState = {
     list : [],
@@ -30,6 +32,10 @@ const initialState = {
     detail : {},
     search_page : 0,
     keyword : '',
+    loading : {
+        main_page : true, 
+        detail_page : true,
+    },
 };
 
 const addComment = (comment) => {
@@ -122,6 +128,9 @@ const getMoiveSearch = (keyword) => {
 
 const getMovieDetail = (id) => {
     return async function(dispatch, getState, {history}){
+
+        dispatch(setLoading(true, 'detail_page'));
+
         // Promise.then 
         const moiveApi = `http://13.209.47.134/api/movies/details/${id}`;
         const commentApi = `http://13.209.47.134/api/movies/reviews/list/${id}?page=1`;
@@ -129,6 +138,8 @@ const getMovieDetail = (id) => {
         const movie = await fetch(moiveApi).then(res => res.json());
         const comment = await fetch(commentApi).then(res => res.json());
         dispatch(setMovieDetail(movie, comment));
+
+        dispatch(setLoading(false, 'detail_page'));
     }
 };
 
@@ -177,6 +188,16 @@ export default handleActions({
 
     [SET_COMMENT] : (state, action) => produce(state, (draft) => {
         draft.comment.list = action.payload.comment.content;
+    }),
+
+    [SET_LOADING] : (state, action) => produce(state, (draft) => {
+        
+        if(action.payload.page === 'detail_page') {
+            draft.loading.detail_page = action.payload.loading;
+        } else {
+            draft.loading.main_page = action.payload.loading;
+        }
+        
     }),
 
 }, initialState);
