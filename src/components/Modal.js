@@ -23,6 +23,7 @@ const Modal = ( props ) => {
         console.log(obj);
 
         dispatch(movieActions.editCommentAPI(obj));
+        close();
     }
 
     return (

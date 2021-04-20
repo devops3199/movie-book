@@ -10,7 +10,7 @@ const SET_COMMENT = "SET_COMMENT";
 const CLEAR_SEARCH_PAGE = "CLEAR_SEARCH_PAGE";
 const SET_LOADING = "SET_LOADING";
 const EDIT_COMMENT = "EDIT_COMMENT";
-const DELETE_COMMENT = "EDIT_COMMENT";
+const DELETE_COMMENT = "DELETE_COMMENT";
 
 const setMovieToday = createAction(SET_MOVIE_TODAY, (movie) => ({movie}));
 const setMovieSearch = createAction(SET_MOVIE_SEARCH, (movie) => ({movie}));
@@ -149,7 +149,7 @@ const addComment = (comment) => {
             .then(data => {
                 alert(data);
                 dispatch(getMovieDetail(comment.m_id));
-                // window.location.reload();
+                
             })
             .catch(err => console.log(err, "addComment"));
         }
@@ -180,7 +180,7 @@ const editCommentAPI = (comment) => {
         .then((res) => res.text())
         .then((result) => {
             alert(result);
-            window.location.reload();
+            dispatch(editComment(comment.r_id, comment.content));
         });
     }
 }
@@ -207,7 +207,6 @@ const deleteCommentAPI = (r_id, m_id) => {
     .then((result) => {
         alert(result);
         dispatch(deleteComment(r_id))
-        window.location.reload();
     });
   }
 }
@@ -259,10 +258,16 @@ export default handleActions({
             draft.loading.main_page = action.payload.loading;
         }
     }),
+
+    [EDIT_COMMENT]: (state, action) => produce(state, (draft) => {
+      let idx = draft.comment.list.findIndex((c)=>c.r_id === action.payload.r_id);
+      draft.comment.list[idx].content = action.payload.comment;
+      
+    }),
     
     [DELETE_COMMENT]: (state, action) => produce(state, (draft) => {
-      let idx = draft.list.findIndex((c)=>c.r_id === action.payload.r_id);
-      draft.list.splice(idx, 1);
+      let idx = draft.comment.list.findIndex((c)=>c.r_id === action.payload.r_id);
+      draft.comment.list.splice(idx, 1);
     }),
 
 }, initialState);
