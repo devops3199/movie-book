@@ -2,27 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import MyMovieCard from 'components/MyMovieCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { actionCreators as userActions } from 'redux/modules/user';
-import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
+import { actionCreators as collectionActions } from 'redux/modules/collection';
 import Permit from "shared/Permit";
 
 const MyMovie = (props) => {
-
   const dispatch = useDispatch();
   const {history} = props;
   const has_token = localStorage.getItem('token');
   const user_info = JSON.parse(localStorage.getItem("userInfo"));
-  const movie_list = useSelector((state) => state.mymovie.list);
+  const movie_list = useSelector((state) => state.collection.list);
 
   React.useEffect(() => {
-
-    if (!has_token) {
-      console.log("nope");
-      return false;
-    } 
-    
-    dispatch(myMovieActions.getMovieAPI(user_info.u_id));
-
+    if (has_token) {
+      dispatch(collectionActions.getMovieCollectionAPI(user_info.u_id));
+    }
   }, []);
 
   return (

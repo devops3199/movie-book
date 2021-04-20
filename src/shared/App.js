@@ -1,6 +1,6 @@
 import React from 'react';
 
-import 'App.css';
+import 'shared/css/App.css';
 import styled from 'styled-components';
 import Logo from 'media/movie_book.png';
 

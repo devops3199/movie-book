@@ -3,18 +3,17 @@ import styled from 'styled-components';
 import Carousel from 'components/Carousel';
 import Card from 'components/Card';
 import { actionCreators as movieActions } from 'redux/modules/movie';
-import { actionCreators as collectionActions } from 'redux/modules/collection';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Main = (props) => {
     const dispatch = useDispatch();
     const movie_list = useSelector((state) => state.movie.list);
-    const collection_list = useSelector((state) => state.collection.list);
+    const collection_list = useSelector((state) => state.movie.movie_collection);
     const {history} = props;
 
     React.useEffect(() => {
         dispatch(movieActions.getMoiveToday());
-        dispatch(collectionActions.getCollection());
+        dispatch(movieActions.getMovieCollection());
     }, []);
 
     return (

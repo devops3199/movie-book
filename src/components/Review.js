@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import Modal from "components/Modal";
-import Star from "elements/Star";
 
 import { faStar as faStarFilled, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons"
 import { faStar as faStarHolo } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { actionCreators as movieActions } from 'redux/modules/movie';
 
 const Review = (props) => {
@@ -54,17 +53,13 @@ const Review = (props) => {
           <ReUser>
             <li>{username}</li>
             <li>{date}</li>
-            {props.is_me && 
+            {is_me && 
               <div>
                 <UpdateBtn onClick={ openModal }>수정</UpdateBtn>
-                <Modal id={id} content={content} rate={rate} open={ modalOpen } close={ closeModal } header="댓글 수정">
-
-                  
-                </Modal>
+                <Modal id={id} content={content} rate={rate} open={ modalOpen } close={ closeModal } header="댓글 수정" />
               </div>}
-            {props.is_me && <DelBtn onClick={() => {
+            {is_me && <DelBtn onClick={() => {
               dispatch(movieActions.deleteCommentAPI(id, mid));
-            
             }}>삭제</DelBtn>}
           </ReUser>
         </ReWriting>
@@ -73,13 +68,6 @@ const Review = (props) => {
     </React.Fragment>
   );
 }
-
-// const ReviewArea = styled.textarea`
-//   margin: 0;
-//   width: 100%;
-//   height: 70px;
-//   padding: 10px;
-// `;
 
 const DelBtn = styled.button`
   border: 1px solid #fff;

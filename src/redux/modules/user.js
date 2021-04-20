@@ -1,6 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
-import {getLocal, setLocal, deleteLocal} from "shared/Local";
 
 const SET_USER = 'SET_USER';
 const LOG_OUT = 'LOG_OUT';
@@ -91,7 +90,6 @@ const loginAPI = (email, pw) => {
 
 const logout = () => {
   return function (dispatch, getState, { history }) {
-    
     localStorage.removeItem('token');
     localStorage.removeItem('userInfo');
     dispatch(logOut());

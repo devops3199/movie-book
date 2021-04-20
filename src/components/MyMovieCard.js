@@ -4,37 +4,29 @@ import styled from 'styled-components';
 import { faStar } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import { useSelector, useDispatch } from 'react-redux';
-import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
+import { useDispatch } from 'react-redux';
+import { actionCreators as collectionActions } from 'redux/modules/collection';
 
 const MyMovieCard = (props) => {
+    const dispatch = useDispatch();
     const { url, title, year, rate, director, actor1, actor2, actor3, description, _onClick } = props;
-
     const styles = {
         url : url,
     };
 
-    const dispatch = useDispatch();
-
     const removeCheck = () => {
         // 삭제 요청 재확인하기
-        if (window.confirm("내 영화 리스트에서 삭제하시겠습니까?") == true){    
+        if (window.confirm("내 영화 리스트에서 삭제하시겠습니까?") === true) {    
             //확인
-            dispatch(myMovieActions.deleteMovieAPI(props.cid))
-
-        }else{   
-            //취소
-            return false;
+            dispatch(collectionActions.deleteMovieCollectionAPI(props.cid))
         }
-    }
+    };
 
     return (
         <CardBox onClick={_onClick}>
-            <Image {...styles}>
-            </Image>
+            <Image {...styles} />
 
             <Info>
-
                 <Info1>
                     <Title>{title} ({year})</Title>
                     <StarOne><FontAwesomeIcon icon={faStar} /> {rate}</StarOne>
@@ -45,7 +37,6 @@ const MyMovieCard = (props) => {
                     <span>출연: {actor1} {actor2} {actor3}</span>
                     <Desc>{description}</Desc>
                 </Info2>
-                
             </Info>
             <DelBtn onClick={(e)=>{
                 e.preventDefault();

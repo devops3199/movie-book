@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { history } from 'redux/configureStore';
-import {getLocal, deleteLocal} from "shared/Local";
 import { useSelector, useDispatch } from 'react-redux';
 import { actionCreators as userActions } from 'redux/modules/user';
 import { actionCreators as movieActions } from 'redux/modules/movie';
@@ -11,17 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Logo from 'media/movie_book.png';
 
 const NavBar = (props) => {
-
     const dispatch = useDispatch();
-
     const is_login = useSelector((state) => state.user.is_login);
-
-    React.useEffect(() => {
-   
-        dispatch(userActions.isLogin());
-
-    }, []);
-
     const [keyword, setKeyword] = React.useState('');
     
     const SearchMovie = () => {
@@ -29,6 +19,10 @@ const NavBar = (props) => {
         history.push('/result');
     };
 
+    React.useEffect(() => {
+        dispatch(userActions.isLogin());
+    }, []);
+    
     return (
         <Navbar className="header">
             <LogoContiner>

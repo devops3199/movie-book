@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import 'Star.css';
+import 'shared/css/Star.css';
 
 const Star = (props) => {
   const { setReviewStar } = props;

@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { history } from 'redux/configureStore';
 import { useDispatch } from 'react-redux';
 import { actionCreators as userActions } from 'redux/modules/user';
-import { idCheck, pwMacth, pwContinuous, emailCheck } from 'shared/common';
+import { emailCheck } from 'shared/common';
 
 import { faEye as farEye } from '@fortawesome/free-regular-svg-icons'
 import { faEyeSlash as farEyeSlash } from '@fortawesome/free-regular-svg-icons'
-import { faUser, faLock, faEnvelope, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Register = (props) => {
@@ -65,13 +65,6 @@ const Register = (props) => {
     });
   }
 
-  // const checkPw = () => {
-  //   // 특수문자 / 문자 / 숫자 포함 형태의 8~15자리 이내의 암호 정규식
-  //   let passRule = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-    
-  //   if(!passRule.test)
-  // }
-
   const emailInfo = useRef();
   const usernameInfo = useRef();
   const pwInfo = useRef();
@@ -125,15 +118,6 @@ const Register = (props) => {
     } else {
       pwInfo.current.style.display = 'none';
     }
-
-    // if (!pwMacth(pw)) {
-    //   setMessagePw('·형식에 맞게 비밀번호를 입력해주세요.');
-    //   pwInfo.current.style.display = 'block';
-    //   console.log('형식에 맞게 비밀번호를 입력해주세요.');
-    //   return;
-    // } else {
-    //   pwInfo.current.style.display = 'none';
-    // }
   }
 
   const doubleCheckPw = () => {

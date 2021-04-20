@@ -1,30 +1,41 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
-const SET_MOVIE_TODAY = "SET_MOVIE_TODAY";
-const SET_MOVIE_SEARCH = "SET_MOVIE_SEARCH";
-const SET_MOVIE_DETAIL = "SET_MOVIE_DETAIL";
-const SET_SEARCH_PAGE = "SET_SEARCH_PAGE";
-const SET_KEYWORD = "SET_KEYWORD";
-const SET_COMMENT = "SET_COMMENT";
-const CLEAR_SEARCH_PAGE = "CLEAR_SEARCH_PAGE";
-const SET_LOADING = "SET_LOADING";
-const EDIT_COMMENT = "EDIT_COMMENT";
-const DELETE_COMMENT = "DELETE_COMMENT";
+const SET_MOVIE_TODAY = "SET_MOVIE_TODAY"; // 메인 페이지 - 오늘의 영화 리스트
+const SET_MOVIE_COLLECTION = "SET_MOVIE_COLLECTION"; // 메인 페이지 - 사용자 영화 리스트
 
-const setMovieToday = createAction(SET_MOVIE_TODAY, (movie) => ({movie}));
-const setMovieSearch = createAction(SET_MOVIE_SEARCH, (movie) => ({movie}));
-const setMovieDetail = createAction(SET_MOVIE_DETAIL, (movie, comment) => ({movie, comment}));
-const setSearchPage = createAction(SET_SEARCH_PAGE, (page) => ({page}));
-const setKeyword = createAction(SET_KEYWORD, (keyword) => ({keyword}));
-const setComment = createAction(SET_COMMENT, (comment) => ({comment}));
-const clearSearchPage = createAction(CLEAR_SEARCH_PAGE, () => ({}));
-const setLoading = createAction(SET_LOADING, (loading, page) => ({loading, page}));
-const editComment = createAction(EDIT_COMMENT, (r_id, comment) => ({r_id, comment}));
-const deleteComment = createAction(DELETE_COMMENT, (r_id) => ({r_id}));
+const SET_MOVIE_DETAIL = "SET_MOVIE_DETAIL"; // 영화 디테일
+
+const SET_MOVIE_SEARCH = "SET_MOVIE_SEARCH"; // 검색 페이지
+const SET_SEARCH_PAGE = "SET_SEARCH_PAGE"; // 검색 페이지 - 무한 스크롤
+const CLEAR_SEARCH_PAGE = "CLEAR_SEARCH_PAGE"; // 새롭게 검색할때 초기화
+const SET_KEYWORD = "SET_KEYWORD"; // 검색어 전역으로 설정
+
+const SET_LOADING = "SET_LOADING"; // 내용 로딩
+
+const SET_COMMENT = "SET_COMMENT"; // 영화 댓글 추가
+const EDIT_COMMENT = "EDIT_COMMENT"; // 댓글 수정
+const DELETE_COMMENT = "DELETE_COMMENT"; // 댓글 삭제
+
+const setMovieToday = createAction(SET_MOVIE_TODAY, (movie) => ({movie})); // 메인 페이지 - 오늘의 영화 리스트
+const setMovieCollection = createAction(SET_MOVIE_COLLECTION, (collection) => ({collection})); // 메인 페이지 - 사용자 영화 리스트
+
+const setMovieDetail = createAction(SET_MOVIE_DETAIL, (movie, comment) => ({movie, comment})); // 영화 디테일
+
+const setMovieSearch = createAction(SET_MOVIE_SEARCH, (movie) => ({movie})); // 검색 페이지
+const setSearchPage = createAction(SET_SEARCH_PAGE, (page) => ({page})); // 검색 페이지 - 무한 스크롤
+const clearSearchPage = createAction(CLEAR_SEARCH_PAGE, () => ({})); // 새롭게 검색할때 초기화
+const setKeyword = createAction(SET_KEYWORD, (keyword) => ({keyword})); // 검색어 전역으로 설정
+
+const setLoading = createAction(SET_LOADING, (loading, page) => ({loading, page})); // 내용 로딩
+
+const setComment = createAction(SET_COMMENT, (comment) => ({comment})); // 영화 댓글 추가
+const editComment = createAction(EDIT_COMMENT, (r_id, comment) => ({r_id, comment})); // 댓글 수정
+const deleteComment = createAction(DELETE_COMMENT, (r_id) => ({r_id})); // 댓글 삭제
 
 const initialState = {
     list : [],
+    movie_collection: [],
     search : {
         content: [],
         last: false,
@@ -51,6 +62,24 @@ const getMoiveToday = () => {
             .then(data => dispatch(setMovieToday(data)))
             .catch(err => console.log(err, "getMovieToday"));
         
+    }
+};
+
+const getMovieCollection = () => {
+    return async function(dispatch, getState, {history}){
+        const users = [31, 28, 1, 32]; // user id
+        let user_collection = {};
+
+        // forEach does not support async await
+        for(let i = 0; i < users.length; i++) {
+            const api = `http://13.209.47.134/api/collections/list/${users[i]}`;
+            const result = await fetch(api).then(res => res.json());
+            let user_name = result[0].user.name; // 임시
+            let temp = { [user_name] : result };
+            user_collection = {...user_collection, ...temp};
+        }
+
+        dispatch(setMovieCollection(user_collection));
     }
 };
 
@@ -218,6 +247,10 @@ export default handleActions({
         draft.list = temp;
     }),
 
+    [SET_MOVIE_COLLECTION] : (state, action) => produce(state, (draft) => {
+        draft.movie_collection = action.payload.collection;
+    }),
+
     [SET_MOVIE_SEARCH] : (state, action) => produce(state, (draft) => {
         if(action.payload.movie.first){
             draft.search.content = action.payload.movie.content;
@@ -274,6 +307,7 @@ export default handleActions({
 
 const actionCreators = {
     getMoiveToday,
+    getMovieCollection,
     getMoiveSearch,
     getMovieDetail,
     getMoiveScroll,

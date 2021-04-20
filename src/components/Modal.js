@@ -1,29 +1,21 @@
 import React from 'react';
-import "Modal.css";
-import Star_1 from "elements/Star";
-import { useSelector, useDispatch } from 'react-redux';
+import "shared/css/Modal.css";
+import { useDispatch } from 'react-redux';
 import { actionCreators as movieActions } from 'redux/modules/movie';
 
 const Modal = ( props ) => {
-
     const dispatch = useDispatch();
-
-    // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-    const { id, open, close, header, content, rate } = props;
-
+    const { id, open, close, header, content, rate } = props; // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
     const [ value, setValue ] = React.useState("");
 
     const editReview = () => {
-
         const obj = {
             r_id : id,
             rate : rate,
             content : value,
         };
-        console.log(obj);
-
         dispatch(movieActions.editCommentAPI(obj));
-        close();
+        close(); // Modal Close
     }
 
     return (
@@ -37,7 +29,6 @@ const Modal = ( props ) => {
                         {/* <button className="close" onClick={close}> &times; </button> */}
                     </header>
                     <textarea defaultValue={content} onChange={(e)=> setValue(e.target.value)}>
-                        {/* {props.children} */}
                     </textarea>
                     <footer>
                         <button className="edit" onClick={editReview}> 수정 </button>

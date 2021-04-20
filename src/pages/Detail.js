@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { history } from 'redux/configureStore';
 
 import { faStar } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -9,9 +8,8 @@ import Star from "elements/Star";
 import Review from "components/Review";
 import Loading from 'shared/Loading';
 
-import { actionCreators as myMovieActions } from 'redux/modules/mymovie';
+import { actionCreators as collectionActions } from 'redux/modules/collection';
 import { actionCreators as movieActions } from 'redux/modules/movie';
-import { actionCreators as userActions } from 'redux/modules/user';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Detail = (props) => {
@@ -19,8 +17,6 @@ const Detail = (props) => {
   const dispatch = useDispatch();
   const has_token = localStorage.getItem('token');
   const user_info = JSON.parse(localStorage.getItem("userInfo"));
-  // const user_info = useSelector((state) => state.user.uid);
-  // console.log(user_info.u_id);
   
   const is_loading = useSelector((state) => state.movie.loading.detail_page);
   const movie_detail = useSelector((state) => state.movie.detail);
@@ -71,7 +67,7 @@ const Detail = (props) => {
       return false;
     } 
 
-    dispatch(myMovieActions.addMovieAPI(movie_detail.m_id));
+    dispatch(collectionActions.addMovieCollectionAPI(movie_detail.m_id));
   };
   
   React.useEffect(() => {
@@ -155,8 +151,6 @@ const Wrap = styled.div`
   margin: 0 auto;
   padding: 46px 0;
   box-sizing: border-box;
-  // border: 1px solid #fff;
-
 `;
 
 const MovieImg = styled.div`
@@ -164,7 +158,6 @@ const MovieImg = styled.div`
   height: 410px;
   display: inline-block;
   margin: 0 auto 25px;
-  // border: 1px solid #fff;
   
   overflow: hidden;
   object-fit: contain;
