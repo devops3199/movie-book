@@ -30,7 +30,7 @@ const setKeyword = createAction(SET_KEYWORD, (keyword) => ({keyword})); // 검�
 const setLoading = createAction(SET_LOADING, (loading, page) => ({loading, page})); // 내용 로딩
 
 const setComment = createAction(SET_COMMENT, (comment) => ({comment})); // 영화 댓글 추가
-const editComment = createAction(EDIT_COMMENT, (r_id, comment) => ({r_id, comment})); // 댓글 수정
+const editComment = createAction(EDIT_COMMENT, (r_id, rate, comment) => ({r_id, rate, comment})); // 댓글 수정
 const deleteComment = createAction(DELETE_COMMENT, (r_id) => ({r_id})); // 댓글 삭제
 
 const initialState = {
@@ -209,7 +209,7 @@ const editCommentAPI = (comment) => {
         .then((res) => res.text())
         .then((result) => {
             alert(result);
-            dispatch(editComment(comment.r_id, comment.content));
+            dispatch(editComment(comment.r_id, comment.rate, comment.content));
         });
     }
 }
@@ -294,6 +294,7 @@ export default handleActions({
 
     [EDIT_COMMENT]: (state, action) => produce(state, (draft) => {
       let idx = draft.comment.list.findIndex((c)=>c.r_id === action.payload.r_id);
+      draft.comment.list[idx].rate = action.payload.rate;
       draft.comment.list[idx].content = action.payload.comment;
       
     }),
