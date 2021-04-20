@@ -1,9 +1,29 @@
 import React from 'react';
 import "Modal.css";
+import Star_1 from "elements/Star";
+import { useSelector, useDispatch } from 'react-redux';
+import { actionCreators as movieActions } from 'redux/modules/movie';
 
 const Modal = ( props ) => {
+
+    const dispatch = useDispatch();
+
     // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-    const { open, edit, close, header } = props;
+    const { id, open, close, header, content, rate } = props;
+
+    const [ value, setValue ] = React.useState("");
+
+    const editReview = () => {
+
+        const obj = {
+            r_id : id,
+            rate : rate,
+            content : value,
+        };
+        console.log(obj);
+
+        dispatch(movieActions.editCommentAPI(obj));
+    }
 
     return (
         // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -12,14 +32,15 @@ const Modal = ( props ) => {
                 <section>
                     <header>
                         {header}
-                        <button className="close" onClick={close}> &times; </button>
+                        {/* <Star_1 /> */}
+                        {/* <button className="close" onClick={close}> &times; </button> */}
                     </header>
-                    <main>
-                        {props.children}
-                    </main>
+                    <textarea defaultValue={content} onChange={(e)=> setValue(e.target.value)}>
+                        {/* {props.children} */}
+                    </textarea>
                     <footer>
-                        <button className="edit" onClick={edit}> edit </button>
-                        <button className="close" onClick={close}> close </button>
+                        <button className="edit" onClick={editReview}> 수정 </button>
+                        <button className="close" onClick={close}> 취소 </button>
                     </footer>
                 </section>
             ) : null }

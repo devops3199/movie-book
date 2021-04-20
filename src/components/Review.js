@@ -1,19 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import Modal from "components/Modal";
+import Star from "elements/Star";
 
 import { faStar as faStarFilled, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons"
 import { faStar as faStarHolo } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import Star from "elements/Star";
+import { useSelector, useDispatch } from 'react-redux';
+import { actionCreators as movieActions } from 'redux/modules/movie';
 
 const Review = (props) => {
 
-  const { date, rate, username, content, id, is_me } = props;
+  const dispatch = useDispatch();
+
+  const { date, rate, username, content, id, mid, is_me } = props;
   const star_fill = new Array(Math.floor(rate/2)).fill(0);
   const star_half_fill = new Array(rate % 2).fill(0);
   const star_holo = new Array(Math.floor((10 - rate) / 2)).fill(0);
+
   const [ modalOpen, setModalOpen ] = React.useState(false);
 
   const openModal = () => {
@@ -52,12 +57,15 @@ const Review = (props) => {
             {props.is_me && 
               <div>
                 <UpdateBtn onClick={ openModal }>수정</UpdateBtn>
-                <Modal open={ modalOpen } close={ closeModal } header="댓글 수정">
+                <Modal id={id} content={content} rate={rate} open={ modalOpen } close={ closeModal } header="댓글 수정">
 
-                  <main> { props.children } </main> 이 곳에 내용 넣기
+                  
                 </Modal>
               </div>}
-            {props.is_me && <UpdateBtn>삭제</UpdateBtn>}
+            {props.is_me && <DelBtn onClick={() => {
+              dispatch(movieActions.deleteCommentAPI(id, mid));
+            
+            }}>삭제</DelBtn>}
           </ReUser>
         </ReWriting>
         
@@ -66,19 +74,25 @@ const Review = (props) => {
   );
 }
 
-const UpdateBtn = styled.button`
+// const ReviewArea = styled.textarea`
+//   margin: 0;
+//   width: 100%;
+//   height: 70px;
+//   padding: 10px;
+// `;
+
+const DelBtn = styled.button`
   border: 1px solid #fff;
-  // position: absolute;
   bottom: 10px;
   right: 10px;
-  background-color: rgba(238, 58, 88, 0);
+  background-color: rgba(238, 58, 88, 0.8);
   border: 0;
   border-radius: 3px;
-  color: rgba(255, 255, 255, 0.7);
-  width: 28px;
+  color: rgba(255, 255, 255, 0.8);
+  width: 30px;
   height: 20px;
   margin: 0 0 0 2px;
-  padding: 0 0 3px 0;
+  padding: 1px 1px 3px 0;
   font-size: 0.74rem;
   font-weight: 500;
   cursor: pointer;
@@ -86,8 +100,32 @@ const UpdateBtn = styled.button`
   &:hover {
       transition: 0.2s;
       border: 0;
-      background-color: rgba(238, 58, 88, 0.7);
-      color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(238, 58, 88, 1);
+      color: rgba(255, 255, 255, 1);
+  }
+`;
+
+const UpdateBtn = styled.button`
+  border: 1px solid #fff;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(48, 179, 255, 0.8);
+  border: 0;
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0.8);
+  width: 30px;
+  height: 20px;
+  margin: 0 0 0 2px;
+  padding: 1px 1px 3px 0;
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  &:hover {
+      transition: 0.2s;
+      border: 0;
+      background-color: rgba(48, 179, 255, 1);
+      color: rgba(255, 255, 255, 1);
   }
 `;
 

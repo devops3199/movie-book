@@ -60,6 +60,8 @@ const Detail = (props) => {
     };
 
     dispatch(movieActions.addComment(obj));
+    setReviewStar(0);
+    setReviewContent(null);
   };
 
   const addCollection = () => {
@@ -70,7 +72,6 @@ const Detail = (props) => {
     } 
 
     dispatch(myMovieActions.addMovieAPI(movie_detail.m_id));
-    console.log('리스트 추가 완료');
   };
   
   React.useEffect(() => {
@@ -125,12 +126,11 @@ const Detail = (props) => {
             return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} /> 
           } else { 
             if(val.user?.u_id === user_info?.u_id) { 
-              return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} is_me /> 
+              return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} mid={id} is_me /> 
             } else { 
-              return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} /> 
+              return <Review key={index} date={val.modifiedAt} rate={val.rate} username={val.name} content={val.content} id={val.r_id} mid={id} /> 
             } 
           }
-          
         })}
         <PaginationContainer>
           {pages.map((val, index) => {
