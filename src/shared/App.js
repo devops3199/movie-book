@@ -161,7 +161,7 @@ const Top = styled.div`
   transition: opacity .3s;
 
   & svg {
-    width: 2rem;
+    width: 1.5rem;
     fill: #fff;
   }
 `;
