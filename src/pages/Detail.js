@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import 'shared/css/Pagination.css';
 
 import { faStar } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -27,7 +28,6 @@ const Detail = (props) => {
   const [reviewContent, setReviewContent] = React.useState(null);
   const [reviewStar, setReviewStar] = React.useState(null);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [prevPage, setPrevPage] = React.useState('pagination_1');
 
   const GetPage = (e) => {
     setCurrentPage(parseInt(e.target.text));
@@ -129,16 +129,16 @@ const Detail = (props) => {
           }
         })}
         <PaginationContainer>
-          {pages.map((val, index) => {
-            let name = `pagination_${index + 1}`;
-            return (
-              <Pagination key={index}>
-                <PageNum className={name} onClick={GetPage}>
-                  {index + 1}
-                </PageNum>
-              </Pagination>
-            );
-          })}
+          <Pagination className='pagination'>
+            {pages.map((val, index) => {
+              let name = `pagination_${index + 1}`;
+              return (
+                  <PageNum key={index} className={currentPage === (index + 1) ? 'active' : ''} onClick={GetPage}>
+                    {index + 1}
+                  </PageNum>
+              );
+            })}
+          </Pagination>
         </PaginationContainer>
         </>)}
       </Wrap>
@@ -346,10 +346,9 @@ const PaginationContainer = styled.div`
   justify-content: center;
 `;
 
-const Pagination = styled.span`
+const Pagination = styled.div`
+  display: inline-block;
   text-align: center;
-  margin: 0 0.5rem;
-  cursor: pointer;
 `;
 
 const PageNum = styled.a`
@@ -357,8 +356,10 @@ const PageNum = styled.a`
   height: 100%;
   cursor: pointer;
   padding: .2rem .7rem;
-  background-color: #ee3a57;
+  background-color: #f79f9f;
   border-radius: 5px;
+  margin: 0 .25rem;
+  transition: background-color .3s;
 `;
 
 export default Detail;

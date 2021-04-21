@@ -19,11 +19,27 @@ import {actionCreators as userActions} from "redux/modules/user";
 const App = (props) => {
   const dispatch = useDispatch();
   const is_login = localStorage.getItem('token')? true : false ;
+  const top = React.useRef();
+
+  const GoTopShow = () => {
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+
+    if(scrollTop > 0){
+      top.current.style.opacity = 1;
+      top.current.style.cursor = 'pointer';
+    } else {
+      top.current.style.opacity = 0;
+      top.current.style.cursor = 'none';
+    }
+  };
 
   React.useEffect(() => {
     if(is_login){
       dispatch(userActions.isLogin());
     }
+    window.addEventListener('scroll', GoTopShow);
+
+    return () => window.removeEventListener('scroll', GoTopShow);
   }, []);
 
   const GoTop = () => {
@@ -60,7 +76,7 @@ const App = (props) => {
           </FooterText>
         </FooterContainer>
       </Footer>
-      <Top onClick={GoTop}>
+      <Top ref={top} onClick={GoTop}>
         <svg viewBox="0 0 512 512">
             <g transform="translate(-1)">
               <path d="M402.067,179.2l-128-170.667c-8.533-11.378-25.6-11.378-34.133,0l-128,170.667
@@ -152,6 +168,9 @@ const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  transition: opacity .3s;
+
   & svg {
     width: 2rem;
     fill: #fff;

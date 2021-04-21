@@ -9,7 +9,7 @@
 }
 
 body {
-    background-color: #25273C;
+    background: linear-gradient( to bottom, #181818, #2e2e2e );
     color: #fff;
 }
 

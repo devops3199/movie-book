@@ -67,16 +67,19 @@ const getMoiveToday = () => {
 
 const getMovieCollection = () => {
     return async function(dispatch, getState, {history}){
-        const users = [31, 28, 1, 32]; // user id
+        let users = [31, 28, 1, 32, 29, 14]; // user id
+        users = users.sort(() => Math.random() - 0.5); // Shuffle
         let user_collection = {};
 
         // forEach does not support async await
         for(let i = 0; i < users.length; i++) {
             const api = `http://13.209.47.134/api/collections/list/${users[i]}`;
             const result = await fetch(api).then(res => res.json());
-            let user_name = result[0].user.name; // 임시
-            let temp = { [user_name] : result };
-            user_collection = {...user_collection, ...temp};
+            if(result.length > 0){
+                let user_name = result[0].user.name;
+                let temp = { [user_name] : result };
+                user_collection = {...user_collection, ...temp};
+            }
         }
 
         dispatch(setMovieCollection(user_collection));
@@ -261,6 +264,14 @@ export default handleActions({
     }),
 
     [SET_MOVIE_DETAIL] : (state, action) => produce(state, (draft) => {
+
+        let num = action.payload.movie.running_time.replace('분', '');
+        
+        if(num > 60) {
+            let time = num % 60 === 0 ? `${Math.floor(num / 60)}시간` : `${Math.floor(num / 60)}시간 ${num % 60}분`;
+            action.payload.movie.running_time = time;
+        }
+
         draft.detail = action.payload.movie;
         draft.comment.list = action.payload.comment.content;
         draft.comment.total_page = action.payload.comment.totalPages;
