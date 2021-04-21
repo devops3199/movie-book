@@ -5,7 +5,7 @@ import MoiveCard from 'components/MovieCard';
 
 const Carousel = (props) => {
     const slide_content = props.list;
-    const lastIndex = Math.ceil(props.list.length/4);
+    const lastIndex = Math.ceil(props.list.length/5);
     const slide_temp = new Array(lastIndex).fill(0);
 
     const slider_container = React.useRef();
