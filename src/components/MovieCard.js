@@ -35,7 +35,7 @@ const Movie = styled.div`
     position: relative;
     width: 15.625rem;
     height: 24.815rem;
-    background-color: #1a1f3f;
+    background-color: #181818;
     cursor: pointer;
     ${(props) => (props.margin ? `margin: ${props.margin};` : '')};
     border-radius: 10px;
@@ -47,8 +47,7 @@ const Poster = styled.div`
     margin-right: 1.25rem;
     background: url(${(props) => (props.url)}) no-repeat center;
     background-size: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-radius: 10px;
 `;
 
 const Title = styled.div`
@@ -68,13 +67,13 @@ const Detail = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba(238, 58, 87, .3);
+    background-color: rgba(0, 162, 199, 0.3);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity .5s;
+    transition: 0.3s;
 
     & svg {
         font-size: 2rem;

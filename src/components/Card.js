@@ -54,14 +54,14 @@ const Rank = styled.div`
     left: 6px;
     width: ${(props) => (props.name === 'main' ? '50px' : '25px')};
     height: ${(props) => (props.name === 'main' ? '50px' : '25px')};
-    background-color: #ee3a57;
+    background-color: #06afd6;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
 
     & span {
-        font-size: ${(props) => (props.name === 'main' ? '1rem' : '.8rem;')};
+        font-size: ${(props) => (props.name === 'main' ? '1.4rem' : '.9rem;')};
         font-weight: ${(props) => (props.name === 'main' ? '700' : '500')};
     }
 `;

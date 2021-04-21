@@ -18,9 +18,9 @@ const Main = (props) => {
 
     return (
         <MainContainer>
-            <Title>
+            <MainTitle>
                 <h3>오늘의 영화</h3>
-            </Title>
+            </MainTitle>
             <CardContainer>
                 {movie_list.map((val, index) => {
                     let full_title = `${val.title} (${val.opening_date})`;
@@ -49,9 +49,16 @@ const Main = (props) => {
     );
 };
 
+const MainTitle = styled.div`
+    width: 100%;
+    margin-top: 1.6rem;
+    font-size: 1.4rem;
+`;
+
 const Title = styled.div`
     width: 100%;
     margin-top: 3rem;
+    font-size: 1rem;
 `;
 
 const MainContainer = styled.div`
@@ -66,7 +73,7 @@ const CardContainer = styled.div`
         'main sub1 sub2 sub3'
         'main sub4 sub5 sub6';
     grid-gap: 1rem;
-    margin: 0 auto 50px auto;
+    margin: 20px auto 50px auto;
 
     @media only screen and (max-width: 1300px) {
         width: 90%;

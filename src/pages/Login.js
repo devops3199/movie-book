@@ -91,7 +91,7 @@ const LoginBox = styled.div`
 //   }
   &:focus-within {
     transition: 0.3s;
-    border-bottom: 1px solid #ff5974;
+    border-bottom: 1px solid #06afd6;
   }
 `;
 
@@ -122,7 +122,7 @@ const LoginInput = styled.input`
 const LoginButton = styled.button`
   border: 0;
   border-radius: 30px;
-  background-color: #ee3a57;
+  background-color: #06afd6;
   color: #fff;
   width: 100%;
   height: 50px;
@@ -135,7 +135,7 @@ const LoginButton = styled.button`
   &:hover {
     transition: 0.2s;
     background-color: transparent;
-    border: 1px solid #ff5974;
+    border: 1px solid #06afd6;
   }
 `; 
 

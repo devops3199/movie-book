@@ -268,7 +268,7 @@ const Actor = styled.p`
 const MyListBtn = styled.button`
   border: 0;
   border-radius: 4px;
-  background-color: #ee3a57;
+  background-color: #06afd6;
   color: #fff;
   width: 100%;
   height: 50px;
@@ -281,7 +281,7 @@ const MyListBtn = styled.button`
   &:hover {
     transition: 0.2s;
     background-color: transparent;
-    border: 1px solid #ff5974;
+    border: 1px solid #06afd6;
   }
 `;
 
@@ -308,7 +308,7 @@ const ReStarBox = styled.div`
 
 const WritingBtn = styled.button`
   background-color: transparent;
-  border: 1px solid #ff5974;
+  border: 1px solid #06afd6;
   border-radius: 3px;
   color: #fff;
   width: 70px;
@@ -322,7 +322,7 @@ const WritingBtn = styled.button`
   &:hover {
     transition: 0.2s;
     border: 0;
-    background-color: #ee3a57;
+    background-color: #06afd6;
   }
 `;
 

@@ -9,7 +9,8 @@
 }
 
 body {
-    background: linear-gradient( to bottom, #181818, #2e2e2e );
+    /* background: linear-gradient( to bottom, #181818, #2e2e2e ); */
+    background: #181818;
     color: #fff;
 }
 

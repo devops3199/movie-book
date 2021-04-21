@@ -7,7 +7,7 @@ import { actionCreators as movieActions } from 'redux/modules/movie';
 
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Logo from 'media/movie_book.png';
+import Logo from 'media/mb_logo.png';
 
 const NavBar = (props) => {
     const dispatch = useDispatch();
@@ -84,25 +84,30 @@ const Navbar = styled.nav`
 `;
 
 const LogoContiner = styled.div`
+    margin: 0 0 0 -7px;
     & span {
         cursor: pointer;
-        font-size: 25px;
+        font-size: 20px;
         font-weight: 700;
+        & img {
+            font-size: 16px;
+        }
     }
 `;
 
 const ContentContainer = styled.div`
     display: flex;
+    align-items: center;
 `;
 
 const SearchContainer = styled.div`
     display: flex;
     align-items: center;
-    border: 2px solid #fff;
+    border: 1px solid #fff;
     border-radius: 20px;
     background-color: transparent;
     box-sizing: border-box;
-    height: 40px;
+    height: 34px;
     outline: none;
     color: #fff;
     padding-left: 20px;
@@ -133,20 +138,24 @@ const Search = styled.input`
 `;
 
 const ButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin: 0 8px 0 0;
     & button {
-        border: 1px solid #ee3a57;
-        border-radius: 5px;
-        background-color: #ee3a57;
+        border: 2px solid #00a2c7;
+        border-radius: 30px;
+        background-color: #00a2c7;
         color: #fff;
         width: 100px;
         margin: 0 .5rem;
-        padding: 10px 0;
+        padding: 0;
         cursor: pointer;
         outline: none;
-
+        height: 34px;
         &:hover {
             background-color: transparent;
-            border: 1px solid #ee3a57;
+            border: 1px solid #00a2c7;
+            transition: 0.2s;
         }
     }
 `;

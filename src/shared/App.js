@@ -2,7 +2,7 @@ import React from 'react';
 
 import 'shared/css/App.css';
 import styled from 'styled-components';
-import Logo from 'media/movie_book.png';
+import Logo from 'media/mb_logo.png';
 
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
@@ -113,8 +113,9 @@ const Header = styled.header`
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: #1a1f3f;
+  background-color: #181818;
   z-index: 10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const Footer = styled.footer`
@@ -122,7 +123,8 @@ const Footer = styled.footer`
   bottom: 0;
   width: 100%;
   height: 150px;
-  background-color: #1a1f3f;
+  background-color: #181818;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 `;
 const FooterContainer = styled.div`
   display: flex;
@@ -160,7 +162,7 @@ const Top = styled.div`
   position: fixed;
   bottom: 5%;
   right: 5%;
-  background-color: #ee3a57;
+  background-color: #00a2c7;
   border-radius: 10px;
   width: 3rem;
   height: 3rem;
