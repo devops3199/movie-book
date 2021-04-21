@@ -103,7 +103,7 @@ const ContentContainer = styled.div`
 const SearchContainer = styled.div`
     display: flex;
     align-items: center;
-    border: 1px solid #fff;
+    border: 2px solid #fff;
     border-radius: 20px;
     background-color: transparent;
     box-sizing: border-box;

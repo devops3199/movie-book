@@ -20,8 +20,6 @@ const Carousel = (props) => {
         slider.style.left = (-100 * index) + '%'; // 좌측으로 이동
         setCurrentIndex(index);
 
-        console.log(index, lastIndex, 'anj');
-
         // 버튼 활성화 설정
         if(index === lastIndex-1) {
             next.current.style.display = 'none';
@@ -36,7 +34,7 @@ const Carousel = (props) => {
     };
 
     React.useEffect(() => {
-        if(slide_content.length < 5) {
+        if(slide_content.length < 6) {
             next.current.style.display = 'none';
         }
         prev.current.style.display = 'none';
@@ -58,8 +56,8 @@ const Carousel = (props) => {
                         left: `${value}%`,
                     };
 
-                    let start = index * 4;
-                    let end = start + 4;
+                    let start = index * 5;
+                    let end = start + 5;
 
                     let temp_arr = slide_content.slice(start, end);
 
