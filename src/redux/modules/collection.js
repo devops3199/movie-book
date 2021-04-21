@@ -13,13 +13,15 @@ const initialState = {
 }
 
 const getMovieCollectionAPI = (uid) => {
-  return function (dispatch, getState, { history }) {
+  return async function (dispatch, getState, { history }) {
     if (!uid) {
-        console.log('실패');
-      return false;
+      alert('로그인을 먼저 해주세요!');
+      return;
     }
-    const API = `http://13.209.47.134/api/collections/list/${uid}`;
-    fetch(API)
+
+    const api = `http://13.209.47.134/api/collections/list/${uid}`;
+    
+    fetch(api)
       .then((res) => res.json())
       .then((res) => {
         
@@ -46,54 +48,141 @@ const getMovieCollectionAPI = (uid) => {
   }
 }
 
-const addMovieCollectionAPI = (mid =null) => {
-  return function (dispatch, getState, { history }) {
-    
-    const token = localStorage.getItem('token');
-    if (!mid || !token) {
-      console.log('실패에요');
-      alert('로그인이 필요합니다!');
-      return false;
-    }
-    const API = `http://13.209.47.134/api/collections/authentication/${mid}`;
-    fetch(API, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization':`${token}`,
-      }
-    })
-    .then((res) => res.text())
-    .then((result) => {
-      alert(result);
-    });
-  }
-}
+const addMovieCollectionAPI = (mid = null) => {
+  return async function (dispatch, getState, { history }) {
+    let access_token = localStorage.getItem("token");
+    let refresh_token = localStorage.getItem('refresh_token');
+    const api = `http://13.209.47.134/api/collections/authentication/${mid}`;
 
-const deleteMovieCollectionAPI = (cid =null) => {
-  return function (dispatch, getState, { history }) {
-    
-    const token = localStorage.getItem('token');
-
-    if (!cid || !token) {
-      console.log('실패에요');
+    if (!access_token) {
+      alert('로그인을 먼저 해주세요!');
       return;
     }
 
-    const API = `http://13.209.47.134/api/collections/authentication/${cid}`;
-    fetch(API, {
+    if(!mid) {
+      alert('잘못된 접근입니다.');
+      return;
+    }
+
+    /* 서버 요청 */
+    const msg = await fetch(api, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Access-Token': `${access_token}`,
+        }
+      })
+      .then(res => res.text())
+      .catch(err => console.log(err, "addMovieCollection"));
+
+    /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
+    if(msg.includes('만료')) {
+        const reToken = await fetch(api, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token':`${access_token}`,
+                'Refresh-Token':`${refresh_token}`,
+              }
+            })
+            .then((res) => {
+                access_token = res.headers.get("Access-Token");
+                refresh_token = res.headers.get("Refresh-Token");
+        
+                // 새 토큰으로 local storage에 저장
+                localStorage.setItem('token', access_token);
+                localStorage.setItem('refresh_token', refresh_token);
+            })
+            .catch(err => console.log(err, "addMovieCollection"));
+
+        /* 새로받은 토큰으로 다시 서버 요청 */
+        const new_request = await fetch(api, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token':`${access_token}`,
+              }
+            })
+            .then(res => res.text())
+            .catch(err => console.log(err, "addMovieCollection"));
+
+        alert(new_request); // 영화 리스트 등록 성공
+    } else {
+        alert(msg); // 영화 리스트 등록 성공
+    }
+  }
+}
+
+const deleteMovieCollectionAPI = (cid = null) => {
+  return async function (dispatch, getState, { history }) {
+    let access_token = localStorage.getItem("token");
+    let refresh_token = localStorage.getItem('refresh_token');
+    const api = `http://13.209.47.134/api/collections/authentication/${cid}`;
+
+    if (!access_token) {
+      alert('로그인을 먼저 해주세요!');
+      return;
+    }
+
+    if(!cid) {
+      alert('잘못된 접근입니다.');
+      return;
+    }
+
+    /* 서버 요청 */
+    const msg = await fetch(api, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${token}`,
-      }
-    })
-    .then((res) => res.text())
-    .then((result) => {
-      alert(result);
-      dispatch(deleteCollection(cid));
-    });
-    
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Access-Token': `${access_token}`,
+        }
+      })
+      .then(res => res.text())
+      .catch(err => console.log(err, "deleteMovieCollection"));
+
+    /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
+    if(msg.includes('만료')) {
+        const reToken = await fetch(api, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token':`${access_token}`,
+                'Refresh-Token':`${refresh_token}`,
+              }
+            })
+            .then((res) => {
+                access_token = res.headers.get("Access-Token");
+                refresh_token = res.headers.get("Refresh-Token");
+        
+                // 새 토큰으로 local storage에 저장
+                localStorage.setItem('token', access_token);
+                localStorage.setItem('refresh_token', refresh_token);
+            })
+            .catch(err => console.log(err, "deleteMovieCollection"));
+
+        /* 새로받은 토큰으로 다시 서버 요청 */
+        const new_request = await fetch(api, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token':`${access_token}`,
+              }
+            })
+            .then(res => res.text())
+            .catch(err => console.log(err, "deleteMovieCollection"));
+
+        alert(new_request); // 영화 리스트 삭제 성공
+    } else {
+        alert(msg); // 영화 리스트 삭제 성공
+    }
+
+    dispatch(deleteCollection(cid));
   }
 }
 
