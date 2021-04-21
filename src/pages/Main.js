@@ -58,6 +58,8 @@ const MainTitle = styled.div`
 const Title = styled.div`
     width: 100%;
     margin-top: 3rem;
+    // margin-left: 8.7rem;
+    margin-bottom: 1.6rem;
     font-size: 1rem;
 `;
 

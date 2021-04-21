@@ -122,8 +122,8 @@ const PrevContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #ee3a57;
-    border-radius: 10px;
+    background-color: #06afd6;
+    border-radius: 30px;
     opacity: 0;
     transition: opacity .3s;
 
@@ -149,8 +149,8 @@ const NextContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #ee3a57;
-    border-radius: 10px;
+    background-color: #06afd6;
+    border-radius: 30px;
     opacity: 0;
     transition: opacity .3s;
 
