@@ -134,7 +134,6 @@ const getMoiveSearch = (keyword) => {
 
 const getMovieDetail = (id) => {
     return async function(dispatch, getState, {history}){
-
         dispatch(setLoading(true, 'detail_page'));
 
         // Promise.then 
@@ -158,96 +157,237 @@ const getMovieComment = (id, page) => {
 }
 
 const addComment = (comment) => {
-    return function(dispatch, getState, {history}){
-        const token = localStorage.getItem("token");
+    return async function(dispatch, getState, {history}){
+        let access_token = localStorage.getItem("token");
+        let refresh_token = localStorage.getItem('refresh_token');
         const api = `http://13.209.47.134/api/movies/reviews/authentication/${comment.m_id}`;
 
-        if(!token){
+        if(!access_token){
             alert('로그인을 먼저 해주세요!');
         } else {
-        fetch(api, {
+
+        /* 서버 요청 */
+        const msg = await fetch(api, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': token,
+                'Access-Token': `${access_token}`,
             },
             body: JSON.stringify({
                 rate : comment.rate,
                 content : comment.content,
+                })
             })
-        })
             .then(res => res.text())
-            .then(data => {
-                alert(data);
-                dispatch(getMovieDetail(comment.m_id));
-                
-            })
             .catch(err => console.log(err, "addComment"));
+
+        /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
+        if(msg.includes('만료')) {
+            const reToken = await fetch(api, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Access-Token':`${access_token}`,
+                    'Refresh-Token':`${refresh_token}`,
+                },
+                body: JSON.stringify({
+                    rate : comment.rate,
+                    content : comment.content,
+                    })
+                })
+                .then((res) => {
+                    access_token = res.headers.get("Access-Token");
+                    refresh_token = res.headers.get("Refresh-Token");
+            
+                    // 새 토큰으로 local storage에 저장
+                    localStorage.setItem('token', access_token);
+                    localStorage.setItem('refresh_token', refresh_token);
+                })
+                .catch(err => console.log(err, "addComment"));
+
+            /* 새로받은 토큰으로 다시 서버 요청 */
+            const new_request = await fetch(api, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Access-Token':`${access_token}`,
+                },
+                body: JSON.stringify({
+                    rate : comment.rate,
+                    content : comment.content,
+                    })
+                })
+                .then(res => res.text())
+                .catch(err => console.log(err, "addComment"));
+
+            alert(new_request); // 리뷰 등록 성공
+        } else {
+            alert(msg); // 리뷰 등록 성공
+        }
+
+        dispatch(getMovieDetail(comment.m_id));
         }
     }
 }
 
 const editCommentAPI = (comment) => {
-    return function (dispatch, getState, { history }) {
-        const token = localStorage.getItem('token');
-        
-        if (!token || !comment) {
-            return false;
+    return async function (dispatch, getState, { history }) {
+        const api = `http://13.209.47.134/api/movies/reviews/authentication/${comment.r_id}`;
+        let access_token = localStorage.getItem("token");
+        let refresh_token = localStorage.getItem('refresh_token');
+
+        if (!access_token) {
+            alert('로그인을 먼저 해주세요!');
+            return;
+        }
+    
+        if(!comment) {
+            alert('잘못된 접근입니다.');
+            return;
         }
 
-        const API = `http://13.209.47.134/api/movies/reviews/authentication/${comment.r_id}`;
-        fetch(API, {
+        /* 서버 요청 */
+        const msg = await fetch(api, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': token,
+                'Access-Token': `${access_token}`,
             },
             body: JSON.stringify({
                 rate : comment.rate,
                 content : comment.content,
+                })
             })
-        })
-        .then((res) => res.text())
-        .then((result) => {
-            alert(result);
-            dispatch(editComment(comment.r_id, comment.rate, comment.content));
-        });
+            .then(res => res.text())
+            .catch(err => console.log(err, "editComment"));
+
+        /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
+        if(msg.includes('만료')) {
+            const reToken = await fetch(api, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Access-Token':`${access_token}`,
+                    'Refresh-Token':`${refresh_token}`,
+                },
+                body: JSON.stringify({
+                    rate : comment.rate,
+                    content : comment.content,
+                    })
+                })
+                .then((res) => {
+                    access_token = res.headers.get("Access-Token");
+                    refresh_token = res.headers.get("Refresh-Token");
+            
+                    // 새 토큰으로 local storage에 저장
+                    localStorage.setItem('token', access_token);
+                    localStorage.setItem('refresh_token', refresh_token);
+                })
+                .catch(err => console.log(err, "editComment"));
+
+            /* 새로받은 토큰으로 다시 서버 요청 */
+            const new_request = await fetch(api, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Access-Token':`${access_token}`,
+                },
+                body: JSON.stringify({
+                    rate : comment.rate,
+                    content : comment.content,
+                    })
+                })
+                .then(res => res.text())
+                .catch(err => console.log(err, "editComment"));
+
+            alert(new_request); // 리뷰 수정 성공
+        } else {
+            alert(msg); // 리뷰 수정 성공
+        }
+
+        dispatch(editComment(comment.r_id, comment.rate, comment.content));
     }
 }
 
 const deleteCommentAPI = (r_id, m_id) => {
-  return function (dispatch, getState, { history }) {
-    
-    const token = localStorage.getItem('token');
+  return async function (dispatch, getState, { history }) {
+    const api = `http://13.209.47.134/api/movies/reviews/authentication/${r_id}`;
+    let access_token = localStorage.getItem("token");
+    let refresh_token = localStorage.getItem('refresh_token');
 
-    if (!r_id || !token) {
-      return false;
+    if (!access_token) {
+        alert('로그인을 먼저 해주세요!');
+        return;
     }
 
-    const API = `http://13.209.47.134/api/movies/reviews/authentication/${r_id}`;
-    fetch(API, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': token,
-      }
-    })
-    .then((res) => res.text())
-    .then((result) => {
-        alert(result);
-        dispatch(deleteComment(r_id))
-    });
+    if(!r_id) {
+        alert('잘못된 접근입니다.');
+        return;
+    }
+
+    /* 서버 요청 */
+    const msg = await fetch(api, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Access-Token': `${access_token}`,
+            }
+        })
+        .then(res => res.text())
+        .catch(err => console.log(err, "deleteComment"));
+
+    /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
+    if(msg.includes('만료')) {
+        const reToken = await fetch(api, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token':`${access_token}`,
+                'Refresh-Token':`${refresh_token}`,
+                }
+            })
+            .then((res) => {
+                access_token = res.headers.get("Access-Token");
+                refresh_token = res.headers.get("Refresh-Token");
+        
+                // 새 토큰으로 local storage에 저장
+                localStorage.setItem('token', access_token);
+                localStorage.setItem('refresh_token', refresh_token);
+            })
+            .catch(err => console.log(err, "deleteComment"));
+
+        /* 새로받은 토큰으로 다시 서버 요청 */
+        const new_request = await fetch(api, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token':`${access_token}`,
+                }
+            })
+            .then(res => res.text())
+            .catch(err => console.log(err, "deleteComment"));
+
+        alert(new_request); // 리뷰 삭제 성공
+    } else {
+        alert(msg); // 리뷰 삭제 성공
+    }
+
+    dispatch(deleteComment(r_id));
   }
 }
 
 export default handleActions({
     [SET_MOVIE_TODAY] : (state, action) => produce(state, (draft) => {
-        let temp = action.payload.movie.slice(0, 7);
-        //draft.list.push(...temp);
-        draft.list = temp;
+        draft.list = action.payload.movie;
     }),
 
     [SET_MOVIE_COLLECTION] : (state, action) => produce(state, (draft) => {
@@ -266,7 +406,7 @@ export default handleActions({
     [SET_MOVIE_DETAIL] : (state, action) => produce(state, (draft) => {
 
         let num = action.payload.movie.running_time.replace('분', '');
-        
+
         if(num > 60) {
             let time = num % 60 === 0 ? `${Math.floor(num / 60)}시간` : `${Math.floor(num / 60)}시간 ${num % 60}분`;
             action.payload.movie.running_time = time;
