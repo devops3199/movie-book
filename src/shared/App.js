@@ -163,7 +163,7 @@ const Top = styled.div`
   bottom: 5%;
   right: 5%;
   background-color: #00a2c7;
-  border-radius: 10px;
+  border-radius: 30px;
   width: 3rem;
   height: 3rem;
   cursor: pointer;
