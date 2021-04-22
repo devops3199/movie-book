@@ -7,6 +7,7 @@
 + :lipstick: Frontend - React
   + 정찬엽
      + JWT - 특정 api 권한 인증 및 Refresh Token 개발
+     + 다수 비동기 작업 처리. async,await 사용
      + 영화 댓글 작성 및 페이징 기능 개발
      + Carousel 개발
      + 무한 스크롤 (검색 결과 페이지) 개발
