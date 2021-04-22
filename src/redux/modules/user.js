@@ -30,12 +30,12 @@ const signupAPI = (email, pw, pwCheck, userName) => {
         name: userName,
     })
   })
-    .then((res) => res.text())
-    .then((res) => {
-      alert(res);
-    });
+  .then((res) => res.text())
+  .then((res) => {
+    alert(res);
+  });
 
-    history.push('/login');
+  history.push('/login');
   }
 };
 
@@ -61,26 +61,24 @@ const loginAPI = (email, pw) => {
 
         localStorage.setItem('token', access_token);
         localStorage.setItem('refresh_token', refresh_token);
-      } else {
-        window.alert('로그인에 실패했습니다.');
-      }
+      } 
       return result.json();
     })
     .then(result => {
-      console.log(result);
-      if (result) {
+      //성공시 state.user 저장
+      if (result.status === 401) {
+        window.alert('로그인에 실패했습니다.');
+      } else {
         localStorage.setItem('userInfo', JSON.stringify(result));
         dispatch(setUser({
           uid: result.u_id,
           name: result.name,
-        }))
+        }));
         history.push('/');
-      } else {
-        window.alert('로그인에 실패했습니다.');
       }
     })
     .catch((error) => {
-    console.log(error);
+      console.log(error);
     });
     
   }

@@ -17,7 +17,7 @@ const Login = (props) => {
   const login = () => {
     
     if (email === '' || pw === '') {
-      console.log('아이디 혹은 비밀번호 오류입니다.');
+      alert('이메일과 비밀번호를 입력해주세요');
       return;
     }
     
@@ -32,14 +32,22 @@ const Login = (props) => {
         <IconSpan>
           <FontAwesomeIcon icon={faEnvelope} />
         </IconSpan>
-        <LoginInput type="text" placeholder="Email" onChange={(e) => { setEmail(e.target.value) }} ></LoginInput>
+        <LoginInput type="text" placeholder="Email" onChange={(e) => { setEmail(e.target.value) }} onKeyPress={(e) => {
+            if(window.event.keyCode === 13) {
+              login();
+          } 
+      }} ></LoginInput>
       </LoginBox>
 
       <LoginBox>
         <IconSpan>
           <FontAwesomeIcon icon={faLock} />
         </IconSpan>
-        <LoginInput type="password" placeholder="Password" onChange={(e) => { setPw(e.target.value) }} ></LoginInput>
+        <LoginInput type="password" placeholder="Password" onChange={(e) => { setPw(e.target.value) }} onKeyPress={(e) => {
+            if(window.event.keyCode === 13) {
+              login();
+          } 
+      }}></LoginInput>
       </LoginBox>
 
       <LoginButton onClick={login} >로그인</LoginButton>
