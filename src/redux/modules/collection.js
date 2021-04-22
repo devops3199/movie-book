@@ -1,5 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
+import { actionCreators as userActions } from 'redux/modules/user';
 
 const SET_COLLECTION = "SET_COLLECTION"; // 내 영화 리스트 설정
 const ADD_COLLECTION = "ADD_COLLECTION"; // 내 영화 리스트 추가
@@ -46,7 +47,7 @@ const getMovieCollectionAPI = (uid) => {
         dispatch(setCollection(movie_list));
       });
   }
-}
+};
 
 const addMovieCollectionAPI = (mid = null) => {
   return async function (dispatch, getState, { history }) {
@@ -65,7 +66,7 @@ const addMovieCollectionAPI = (mid = null) => {
     }
 
     /* 서버 요청 */
-    const msg = await fetch(api, {
+    const response = await fetch(api, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -73,11 +74,24 @@ const addMovieCollectionAPI = (mid = null) => {
           'Access-Token': `${access_token}`,
         }
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .catch(err => console.log(err, "addMovieCollection"));
 
+    if(response.status !== undefined) {
+      // 401 권한없음
+      if(response.status === 401) {
+        alert('재로그인이 필요합니다.');
+        dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+        return;
+      } else {
+        // 500 서버 에러
+        alert('유효하지 않은 접근입니다.');
+        return;
+      }
+    }
+    
     /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
-    if(msg.includes('만료')) {
+    if(response.msg.includes('만료')) {
         const reToken = await fetch(api, {
             method: 'POST',
             headers: {
@@ -88,12 +102,14 @@ const addMovieCollectionAPI = (mid = null) => {
               }
             })
             .then((res) => {
+              if(res.status === 200) {
                 access_token = res.headers.get("Access-Token");
                 refresh_token = res.headers.get("Refresh-Token");
         
                 // 새 토큰으로 local storage에 저장
                 localStorage.setItem('token', access_token);
                 localStorage.setItem('refresh_token', refresh_token);
+              } 
             })
             .catch(err => console.log(err, "addMovieCollection"));
 
@@ -106,15 +122,27 @@ const addMovieCollectionAPI = (mid = null) => {
                 'Access-Token':`${access_token}`,
               }
             })
-            .then(res => res.text())
+            .then(res => res.json())
             .catch(err => console.log(err, "addMovieCollection"));
 
-        alert(new_request); // 영화 리스트 등록 성공
+        if(new_request.status !== undefined) {
+          // 401 권한없음
+          if(new_request.status === 401) {
+            alert('재로그인이 필요합니다.');
+            dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+            return;
+          } else {
+            // 500 서버 에러
+            alert('유효하지 않은 접근입니다.');
+            return;
+          }
+        }
+        alert(new_request.msg); // 영화 리스트 등록 성공
     } else {
-        alert(msg); // 영화 리스트 등록 성공
+        alert(response.msg); // 영화 리스트 등록 성공
     }
   }
-}
+};
 
 const deleteMovieCollectionAPI = (cid = null) => {
   return async function (dispatch, getState, { history }) {
@@ -133,7 +161,7 @@ const deleteMovieCollectionAPI = (cid = null) => {
     }
 
     /* 서버 요청 */
-    const msg = await fetch(api, {
+    const response = await fetch(api, {
       method: 'DELETE',
       headers: {
           'Content-Type': 'application/json',
@@ -141,11 +169,24 @@ const deleteMovieCollectionAPI = (cid = null) => {
           'Access-Token': `${access_token}`,
         }
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .catch(err => console.log(err, "deleteMovieCollection"));
+    
+    if(response.status !== undefined) {
+      // 401 권한없음
+      if(response.status === 401) {
+        alert('재로그인이 필요합니다.');
+        dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+        return;
+      } else {
+        // 500 서버 에러
+        alert('유효하지 않은 접근입니다.');
+        return;
+      }
+    }
 
     /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
-    if(msg.includes('만료')) {
+    if(response.msg.includes('만료')) {
         const reToken = await fetch(api, {
             method: 'DELETE',
             headers: {
@@ -156,12 +197,14 @@ const deleteMovieCollectionAPI = (cid = null) => {
               }
             })
             .then((res) => {
+              if(res.status === 200) {
                 access_token = res.headers.get("Access-Token");
                 refresh_token = res.headers.get("Refresh-Token");
         
                 // 새 토큰으로 local storage에 저장
                 localStorage.setItem('token', access_token);
                 localStorage.setItem('refresh_token', refresh_token);
+              } 
             })
             .catch(err => console.log(err, "deleteMovieCollection"));
 
@@ -174,17 +217,29 @@ const deleteMovieCollectionAPI = (cid = null) => {
                 'Access-Token':`${access_token}`,
               }
             })
-            .then(res => res.text())
+            .then(res => res.json())
             .catch(err => console.log(err, "deleteMovieCollection"));
 
-        alert(new_request); // 영화 리스트 삭제 성공
+        if(new_request.status !== undefined) {
+          // 401 권한없음
+          if(new_request.status === 401) {
+            alert('재로그인이 필요합니다.');
+            dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+            return;
+          } else {
+            // 500 서버 에러
+            alert('유효하지 않은 접근입니다.');
+            return;
+          }
+        }
+        alert(new_request.msg); // 영화 리스트 삭제 성공
     } else {
-        alert(msg); // 영화 리스트 삭제 성공
+        alert(response.msg); // 영화 리스트 삭제 성공
     }
 
     dispatch(deleteCollection(cid));
   }
-}
+};
 
 export default handleActions(
   {

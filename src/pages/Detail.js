@@ -25,7 +25,7 @@ const Detail = (props) => {
   const comment_pages = useSelector((state) => state.movie.comment.total_page);
   const pages = new Array(comment_pages).fill(0);
 
-  const [reviewContent, setReviewContent] = React.useState(null);
+  const reviewContent = React.useRef();
   const [reviewStar, setReviewStar] = React.useState(null);
   const [currentPage, setCurrentPage] = React.useState(1);
 
@@ -34,12 +34,12 @@ const Detail = (props) => {
   }; 
 
   const makeReview = () => {
-    if(reviewContent === null && reviewStar === null) {
+    if(reviewContent.current.value === null && reviewStar === null) {
       alert("내용을 입력해주세요.");
       return;
     }
 
-    if(reviewContent === null) {
+    if(reviewContent.current.value === null) {
       alert("리뷰 내용을 입력해주세요.");
       return;
     }
@@ -52,12 +52,11 @@ const Detail = (props) => {
     const obj = {
       m_id : id,
       rate : reviewStar,
-      content : reviewContent,
+      content : reviewContent.current.value,
     };
 
     dispatch(movieActions.addComment(obj));
     setReviewStar(0);
-    setReviewContent(null);
   };
 
   const addCollection = () => {
@@ -112,7 +111,7 @@ const Detail = (props) => {
             <WritingBtn onClick={makeReview}>작성</WritingBtn>
           </ReStarBox>
           <ReWriting>
-            <ReviewArea placeholder="댓글을 남겨주세요" onChange={(e) => {setReviewContent(e.target.value)}}>
+            <ReviewArea placeholder="댓글을 남겨주세요" ref={reviewContent}>
             </ReviewArea>
           </ReWriting>
         </ReviewBox>
