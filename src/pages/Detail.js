@@ -320,7 +320,7 @@ const WritingBtn = styled.button`
   cursor: pointer;
   outline: none;
   &:hover {
-    transition: 0.2s;
+    transition: 0.3s;
     border: 0;
     background-color: #06afd6;
   }
@@ -356,7 +356,7 @@ const PageNum = styled.a`
   height: 100%;
   cursor: pointer;
   padding: .2rem .7rem;
-  background-color: #f79f9f;
+  background-color: rgba(6, 175, 214, 0.5);
   border-radius: 5px;
   margin: 0 .25rem;
   transition: background-color .3s;

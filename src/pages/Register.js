@@ -58,7 +58,7 @@ const Register = (props) => {
 
       } else {
         setMessageEmail('·사용이 가능한 이메일입니다.');
-        emailInfo.current.style.color = '#8ff6ff';
+        emailInfo.current.style.color = '#1cd5ff';
         console.log('사용이 가능한 이메일입니다.');
         setEmailDup(false);
       }
@@ -87,7 +87,7 @@ const Register = (props) => {
 
     if (!emailCheck(email)) {
       setMessageEmail('·이메일 형식을 지켜주세요!');
-      emailInfo.current.style.color = '#06afd6';
+      emailInfo.current.style.color = '#ee3a57';
       emailInfo.current.style.display = 'block';
       console.log('이메일 형식을 지켜주세요!');
       return;

@@ -157,8 +157,8 @@ const DelBtn = styled.button`
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: rgba(238, 58, 88, 0);
-    border: 1px solid rgba(238, 58, 88, 0.6);
+    background-color: rgba(6, 175, 214, 0);
+    border: 1px solid rgba(6, 175, 214, 0.6);
     border-radius: 3px;
     color: rgba(255, 255, 255, 0.9);
     width: 46px;
@@ -172,7 +172,7 @@ const DelBtn = styled.button`
     &:hover {
         transition: 0.2s;
         border: 0;
-        background-color: rgba(238, 58, 88, 0.9);
+        background-color: rgba(6, 175, 214, 0.9);
     }
 `;
 

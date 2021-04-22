@@ -1,5 +1,5 @@
 .pagination a.active {
-    background-color: #ee3a57;
+    background-color: #06afd6;
 }
 
-.pagination a:hover:not(.active) {background-color: #ee3a57;}
+.pagination a:hover:not(.active) {background-color: #06afd6;}
