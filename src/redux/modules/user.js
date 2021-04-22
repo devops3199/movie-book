@@ -54,21 +54,13 @@ const loginAPI = (email, pw) => {
       })
     })
     .then((result) => {
-      console.log(result);
-      
       //성공시 토큰, 유저 정보 저장
       if (result.status === 200) {
-        //let token = result.headers.get("Authorization");
         let access_token = result.headers.get("Access-Token");
         let refresh_token = result.headers.get("Refresh-Token");
 
-        console.log(access_token, refresh_token, '토큰');
-
         localStorage.setItem('token', access_token);
         localStorage.setItem('refresh_token', refresh_token);
-        
-        console.log(localStorage.getItem("token"), localStorage.getItem("refresh_token"), '저장');
-        
       } else {
         window.alert('로그인에 실패했습니다.');
       }
@@ -94,12 +86,12 @@ const loginAPI = (email, pw) => {
   }
 };
 
-const logout = () => {
+const logout = (page = '/') => {
   return function (dispatch, getState, { history }) {
     localStorage.removeItem('token');
     localStorage.removeItem('userInfo');
     dispatch(logOut());
-    history.replace('/');
+    history.replace(page);
   }
 };
 

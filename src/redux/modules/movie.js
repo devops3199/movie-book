@@ -1,5 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
+import { actionCreators as userActions } from 'redux/modules/user';
 
 const SET_MOVIE_TODAY = "SET_MOVIE_TODAY"; // 메인 페이지 - 오늘의 영화 리스트
 const SET_MOVIE_COLLECTION = "SET_MOVIE_COLLECTION"; // 메인 페이지 - 사용자 영화 리스트
@@ -138,7 +139,7 @@ const getMovieDetail = (id) => {
 
         // Promise.then 
         const moiveApi = `http://13.209.47.134/api/movies/details/${id}`;
-        const commentApi = `http://13.209.47.134/api/movies/reviews/list/${id}?page=1`;
+        const commentApi = `http://13.209.47.134/api/reviews/list/${id}?page=1`;
 
         const movie = await fetch(moiveApi).then(res => res.json());
         const comment = await fetch(commentApi).then(res => res.json());
@@ -150,7 +151,7 @@ const getMovieDetail = (id) => {
 
 const getMovieComment = (id, page) => {
     return async function(dispatch, getState, {history}){
-        const commentApi = `http://13.209.47.134/api/movies/reviews/list/${id}?page=${page}`;
+        const commentApi = `http://13.209.47.134/api/reviews/list/${id}?page=${page}`;
         const comment = await fetch(commentApi).then(res => res.json());
         dispatch(setComment(comment));
     }
@@ -160,14 +161,14 @@ const addComment = (comment) => {
     return async function(dispatch, getState, {history}){
         let access_token = localStorage.getItem("token");
         let refresh_token = localStorage.getItem('refresh_token');
-        const api = `http://13.209.47.134/api/movies/reviews/authentication/${comment.m_id}`;
+        const api = `http://13.209.47.134/api/reviews/authentication/${comment.m_id}`;
 
         if(!access_token){
             alert('로그인을 먼저 해주세요!');
         } else {
 
         /* 서버 요청 */
-        const msg = await fetch(api, {
+        const response = await fetch(api, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -179,11 +180,24 @@ const addComment = (comment) => {
                 content : comment.content,
                 })
             })
-            .then(res => res.text())
+            .then(res => res.json())
             .catch(err => console.log(err, "addComment"));
 
+        if(response.status !== undefined) {
+            // 401 권한없음
+            if(response.status === 401) {
+                alert('재로그인이 필요합니다.');
+                dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+                return;
+            } else {
+                // 500 서버 에러
+                alert('유효하지 않은 접근입니다.');
+                return;
+            }
+        }
+
         /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
-        if(msg.includes('만료')) {
+        if(response.msg.includes('만료')) {
             const reToken = await fetch(api, {
                 method: 'POST',
                 headers: {
@@ -220,12 +234,24 @@ const addComment = (comment) => {
                     content : comment.content,
                     })
                 })
-                .then(res => res.text())
+                .then(res => res.json())
                 .catch(err => console.log(err, "addComment"));
 
-            alert(new_request); // 리뷰 등록 성공
+            if(new_request.status !== undefined) {
+                // 401 권한없음
+                if(new_request.status === 401) {
+                    alert('재로그인이 필요합니다.');
+                    dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+                    return;
+                } else {
+                    // 500 서버 에러
+                    alert('유효하지 않은 접근입니다.');
+                    return;
+                }
+            }
+            alert(new_request.msg); // 리뷰 등록 성공
         } else {
-            alert(msg); // 리뷰 등록 성공
+            alert(response.msg); // 리뷰 등록 성공
         }
 
         dispatch(getMovieDetail(comment.m_id));
@@ -235,7 +261,7 @@ const addComment = (comment) => {
 
 const editCommentAPI = (comment) => {
     return async function (dispatch, getState, { history }) {
-        const api = `http://13.209.47.134/api/movies/reviews/authentication/${comment.r_id}`;
+        const api = `http://13.209.47.134/api/reviews/authentication/${comment.r_id}`;
         let access_token = localStorage.getItem("token");
         let refresh_token = localStorage.getItem('refresh_token');
 
@@ -250,7 +276,7 @@ const editCommentAPI = (comment) => {
         }
 
         /* 서버 요청 */
-        const msg = await fetch(api, {
+        const response = await fetch(api, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -262,11 +288,24 @@ const editCommentAPI = (comment) => {
                 content : comment.content,
                 })
             })
-            .then(res => res.text())
+            .then(res => res.json())
             .catch(err => console.log(err, "editComment"));
 
+        if(response.status !== undefined) {
+            // 401 권한없음
+            if(response.status === 401) {
+                alert('재로그인이 필요합니다.');
+                dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+                return;
+            } else {
+                // 500 서버 에러
+                alert('유효하지 않은 접근입니다.');
+                return;
+            }
+        }
+
         /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
-        if(msg.includes('만료')) {
+        if(response.msg.includes('만료')) {
             const reToken = await fetch(api, {
                 method: 'PUT',
                 headers: {
@@ -290,6 +329,7 @@ const editCommentAPI = (comment) => {
                 })
                 .catch(err => console.log(err, "editComment"));
 
+
             /* 새로받은 토큰으로 다시 서버 요청 */
             const new_request = await fetch(api, {
                 method: 'PUT',
@@ -303,12 +343,24 @@ const editCommentAPI = (comment) => {
                     content : comment.content,
                     })
                 })
-                .then(res => res.text())
+                .then(res => res.json())
                 .catch(err => console.log(err, "editComment"));
 
-            alert(new_request); // 리뷰 수정 성공
+            if(new_request.status !== undefined) {
+                // 401 권한없음
+                if(new_request.status === 401) {
+                    alert('재로그인이 필요합니다.');
+                    dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+                    return;
+                } else {
+                    // 500 서버 에러
+                    alert('유효하지 않은 접근입니다.');
+                    return;
+                }
+            }
+            alert(new_request.msg); // 리뷰 수정 성공
         } else {
-            alert(msg); // 리뷰 수정 성공
+            alert(response.msg); // 리뷰 수정 성공
         }
 
         dispatch(editComment(comment.r_id, comment.rate, comment.content));
@@ -317,7 +369,7 @@ const editCommentAPI = (comment) => {
 
 const deleteCommentAPI = (r_id, m_id) => {
   return async function (dispatch, getState, { history }) {
-    const api = `http://13.209.47.134/api/movies/reviews/authentication/${r_id}`;
+    const api = `http://13.209.47.134/api/reviews/authentication/${r_id}`;
     let access_token = localStorage.getItem("token");
     let refresh_token = localStorage.getItem('refresh_token');
 
@@ -332,7 +384,7 @@ const deleteCommentAPI = (r_id, m_id) => {
     }
 
     /* 서버 요청 */
-    const msg = await fetch(api, {
+    const response = await fetch(api, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -340,11 +392,25 @@ const deleteCommentAPI = (r_id, m_id) => {
             'Access-Token': `${access_token}`,
             }
         })
-        .then(res => res.text())
+        .then(res => res.json())
         .catch(err => console.log(err, "deleteComment"));
+    
+    if(response.status !== undefined) {
+        // 401 권한없음
+        if(response.status === 401) {
+            alert('재로그인이 필요합니다.');
+            dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+            return;
+        } else {
+            // 500 서버 에러
+            console.log(response);
+            alert('유효하지 않은 접근입니다.');
+            return;
+        }
+    }
 
     /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
-    if(msg.includes('만료')) {
+    if(response.msg.includes('만료')) {
         const reToken = await fetch(api, {
             method: 'DELETE',
             headers: {
@@ -373,12 +439,24 @@ const deleteCommentAPI = (r_id, m_id) => {
                 'Access-Token':`${access_token}`,
                 }
             })
-            .then(res => res.text())
+            .then(res => res.json())
             .catch(err => console.log(err, "deleteComment"));
 
-        alert(new_request); // 리뷰 삭제 성공
+        if(new_request.status !== undefined) {
+            // 401 권한없음
+            if(new_request.status === 401) {
+                alert('재로그인이 필요합니다.');
+                dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+                return;
+            } else {
+                // 500 서버 에러
+                alert('유효하지 않은 접근입니다.');
+                return;
+            }
+        }
+        alert(new_request.msg); // 리뷰 삭제 성공
     } else {
-        alert(msg); // 리뷰 삭제 성공
+        alert(response.msg); // 리뷰 삭제 성공
     }
 
     dispatch(deleteComment(r_id));
