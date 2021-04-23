@@ -482,7 +482,7 @@ export default handleActions({
     }),
 
     [SET_MOVIE_DETAIL] : (state, action) => produce(state, (draft) => {
-
+        /* 230분 -> 3시간 50분 변환 작업 */
         let num = action.payload.movie.running_time.replace('분', '');
 
         if(num > 60) {
@@ -513,7 +513,7 @@ export default handleActions({
     }),
 
     [SET_LOADING] : (state, action) => produce(state, (draft) => {
-        
+        /* 디테일 페이지의 내용 로딩 여부, 메인 페이지의 내용 로딩 여부 */
         if(action.payload.page === 'detail_page') {
             draft.loading.detail_page = action.payload.loading;
         } else {
