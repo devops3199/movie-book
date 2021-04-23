@@ -1,19 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
 
 * {
-    font-family: 'Noto Sans KR', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    /* background: linear-gradient( to bottom, #181818, #2e2e2e ); */
-    background: #181818;
-    color: #fff;
+  /* background: linear-gradient( to bottom, #181818, #2e2e2e ); */
+  background: #181818;
+  color: #fff;
 }
 
-h1,h2,h3,h4,h5,h6 {
-    color: #fff;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #fff;
 }

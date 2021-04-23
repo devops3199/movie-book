@@ -1,45 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css");
 
 .e_rating {
-    border: none;
-    float: left;
+  border: none;
+  float: left;
 }
 
 .e_rating > input {
-     display: none;
+  display: none;
 }
 
 .e_rating > label:before {
-     content: '\f005';
-     font-family: FontAwesome;
-     display: inline-block;
-     margin-right: 5px;
-     font-size: 1.5rem;
-     cursor: pointer;
+  content: "\f005";
+  font-family: FontAwesome;
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .e_rating > .e_half:before {
-     content: '\f089';
-     position: absolute;
-     cursor: pointer;
+  content: "\f089";
+  position: absolute;
+  cursor: pointer;
 }
 
-.e_rating > label{
-    color: #ddd;
-    float: right;
-    cursor: pointer;
+.e_rating > label {
+  color: #ddd;
+  float: right;
+  cursor: pointer;
 }
 
 .e_rating > input:checked ~ label,
 .e_rating:not(:checked) > label:hover,
-.e_rating:not(:checked) > label:hover ~ label{
-    color: #ee3a57;
+.e_rating:not(:checked) > label:hover ~ label {
+  color: #ee3a57;
 }
 
 .e_rating > input:checked + label:hover,
 .e_rating > input:checked ~ label:hover,
 .e_rating > label:hover ~ input:checked ~ label,
-.e_rating > input:checked ~ label:hover ~ label{
-    color: #ee3a57;
+.e_rating > input:checked ~ label:hover ~ label {
+  color: #ee3a57;
 }
