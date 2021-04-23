@@ -14,23 +14,26 @@ const Register = (props) => {
 
   const dispatch = useDispatch();
 
-  const [show, setShow] = React.useState(false);
-  const [show2, setShow2] = React.useState(false);
+  const [show, setShow] = React.useState(false);  // show = 비밀번호 인풋에 작성한 비밀번호
+  const [show2, setShow2] = React.useState(false);  // show2 = 비밀번호 확인 인풋에 작성한 비밀번호
 
+  // 비밀번호 인풋 내용 보기
   const changeEye = () => {
       setShow(show? false : true);
   };
+
+  // 비밀번호 확인 인풋 내용 보기
   const changeEye2 = () => {
       setShow2(show2? false : true);
   };
 
 
   const [email, setEmail] = React.useState('');
-  const [emailDup, setEmailDup] = React.useState(true);
   const [userName, setUserName] = React.useState('');
   const [pw, setPw] = React.useState('');
   const [pwCheck, setPwCheck] = React.useState('');
 
+  // 회원가입 버튼 클릭 시
   const signUp = () => {
     if (email === "" || userName === "" || pw === "" || pwCheck === "") {
       return;
@@ -43,6 +46,7 @@ const Register = (props) => {
     dispatch(userActions.signupAPI(email, pw, pwCheck, userName));
   }
 
+  // 이메일 사용 가능 여부 확인. 이메일 인풋 포커스 아웃 시
   const checkEmailAPI = (email) => {
     
     const API = `http://13.209.47.134/api/signup/${email}`;
@@ -53,14 +57,10 @@ const Register = (props) => {
       if (res === true) {
         emailInfo.current.style.color = '#ee3a57';
         setMessageEmail('·이미 등록된 이메일입니다. 다시 작성해 주십시오!');
-        console.log('이미 등록된 이메일입니다. 다시 작성해 주십시오!');
-        setEmailDup(true);
 
       } else {
         setMessageEmail('·사용이 가능한 이메일입니다.');
         emailInfo.current.style.color = '#1cd5ff';
-        console.log('사용이 가능한 이메일입니다.');
-        setEmailDup(false);
       }
     });
   }
@@ -74,6 +74,7 @@ const Register = (props) => {
   const [messagePw, setMessagePw] = React.useState('');
   const [messagePwCheck, setMessagePwCheck] = React.useState('');
 
+  // 이메일 작성 없을 경우 또는 이메일 형식에 맞지 않을 경우, 포커스 아웃 되면 동작
   const checkEm = () => {
     if (email === '') {
       setMessageEmail('·이메일을 입력해주세요.');
@@ -98,6 +99,7 @@ const Register = (props) => {
     checkEmailAPI(email);
   }
 
+  // 유저 이름 작성 없이 포커스 아웃 되었을 때
   const checkUsername = () => {
     if (userName === '') {
       setMessageUsername('·이름을 입력해주세요.');
@@ -109,6 +111,7 @@ const Register = (props) => {
     }
   }
 
+  // 비밀번호 작성 없이 포커스 아웃 되었을 때
   const checkPw = () => {
     if (pw === '') {
       setMessagePw('·비밀번호를 입력해주세요.');
@@ -120,6 +123,7 @@ const Register = (props) => {
     }
   }
 
+  // 비밀번호 확인 작성 없을 경우 또는 앞서 작성한 비밀번호 내용과 다를 경우, 포커스 아웃 되었을 때
   const doubleCheckPw = () => {
     if (pwCheck === '') {
       setMessagePwCheck('·한 번 더 비밀번호를 입력해주세요.');

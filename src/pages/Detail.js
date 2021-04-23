@@ -33,6 +33,7 @@ const Detail = (props) => {
     setCurrentPage(parseInt(e.target.text));
   }; 
 
+  // 리뷰 작성 시
   const makeReview = () => {
     if(reviewContent.current.value === null && reviewStar === null) {
       alert("내용을 입력해주세요.");
@@ -59,6 +60,7 @@ const Detail = (props) => {
     setReviewStar(0);
   };
 
+  // '+내 리스트에 담기' 클릭 시
   const addCollection = () => {
     if (!has_token) {
       alert('로그인이 필요합니다!');
@@ -66,14 +68,16 @@ const Detail = (props) => {
       return false;
     } 
 
-    dispatch(collectionActions.addMovieCollectionAPI(movie_detail.m_id));
+    dispatch(collectionActions.addMovieCollectionAPI(movie_detail.m_id));  // 내 영화 리스트에 추가
   };
   
+  // 해당 영화 정보 가져오기
   React.useEffect(() => {
     dispatch(movieActions.getMovieDetail(id));
     window.scrollTo(0, 0);
   }, []);
 
+  // 해당 영화 댓글 가져오기
   React.useEffect(() => {
     dispatch(movieActions.getMovieComment(id, currentPage));
   }, [currentPage]);

@@ -90,7 +90,7 @@ const addMovieCollectionAPI = (mid = null) => {
       }
     }
     
-    /* 만약 토큰이 만료되면 다시 요청해서 새로운 토근 발급 */
+    /* 만약 토큰이 만료되면 다시 요청해서 새로운 토큰 발급 */
     if(response.msg.includes('만료')) {
         const reToken = await fetch(api, {
             method: 'POST',

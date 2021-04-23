@@ -1,8 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
 
-const SET_USER = 'SET_USER';
-const LOG_OUT = 'LOG_OUT';
+const SET_USER = 'SET_USER';  // 로그인 유저 설정
+const LOG_OUT = 'LOG_OUT';  // 로그아웃
 
 const setUser = createAction(SET_USER, (user) => ({ user }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
@@ -32,7 +32,7 @@ const signupAPI = (email, pw, pwCheck, userName) => {
   })
   .then((res) => res.text())
   .then((res) => {
-    alert(res);
+    alert(res);  // 회원가입 성공
   });
 
   history.push('/login');

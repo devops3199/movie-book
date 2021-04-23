@@ -14,6 +14,7 @@ const Login = (props) => {
   const [email, setEmail] = React.useState('');
   const [pw, setPw] = React.useState('');
   
+  // 로그인 버튼 클릭 시
   const login = () => {
     
     if (email === '' || pw === '') {

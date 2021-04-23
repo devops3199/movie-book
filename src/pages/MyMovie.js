@@ -12,6 +12,7 @@ const MyMovie = (props) => {
   const user_info = JSON.parse(localStorage.getItem("userInfo"));
   const movie_list = useSelector((state) => state.collection.list);
 
+  // local storage에 토큰이 있을 경우(로그인 완료) 내 영화 리스트 가져오기
   React.useEffect(() => {
     if (has_token) {
       dispatch(collectionActions.getMovieCollectionAPI(user_info.u_id));
