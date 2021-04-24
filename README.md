@@ -23,6 +23,13 @@
   + Source (해당 주소에서 확인 가능합니다.)
     + https://github.com/cowlsdnr77/moviebook
 
+### :100: 배운점 + 느낀점
++ React Hook (Context API), HTTP (흐름이해 + OSI 계층),
+  + https://kodepaper.tistory.com/21
+  + https://kodepaper.tistory.com/22
++ 비동기 Async/Await
+  + https://kodepaper.tistory.com/25
+
 ### :link: 라이브
 http://moviebook99.shop/
 
