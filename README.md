@@ -1,5 +1,15 @@
 # :fleur_de_lis: 항해99 미니 프로젝트 (MovieBook)
 
+<p align='center'>
+    <img src="https://img.shields.io/badge/React-v17.0.2-blue?logo=React"/>
+    <img src="https://img.shields.io/badge/Redux-v4.0.5-purple?logo=Redux"/>
+    <img src="https://img.shields.io/badge/Immer-v9.0.1-00E7C3?logo=Immer"/>
+    <img src="https://img.shields.io/badge/Lodash-v4.17.21-blue"/>
+    <img src="https://img.shields.io/badge/StyledComponents-v5.2.1-pink?logo=styled-components"/>
+    <img src="https://img.shields.io/badge/SpringBoot-v2.4.4-6db33f?logo=Spring"/>
+    <img src="https://img.shields.io/badge/yarn-^1.22.10-yellow?logo=yarn" />
+</p>
+
 ### :timer_clock: 개발기간
 + 2021년 04월 09일 ~ 2021년 04월 22일
 
@@ -11,6 +21,7 @@
      + 영화 댓글 작성 및 페이징 기능 개발
      + Carousel 개발
      + 무한 스크롤 (검색 결과 페이지) 개발
+       + Throttle 응용
      + Frontend DevOps 관리 (Git, AWS S3, Router 53)
   + 정성목
      + 로그인(JWT)/회원가입 기능 개발
