@@ -41,8 +41,5 @@
 + 비동기 Async/Await
   + https://kodepaper.tistory.com/25
 
-### :link: 라이브
-http://moviebook99.shop/
-
-### :clapper: 영상
+### :clapper: 결과물
 https://youtu.be/c6mZIPFTwj4
