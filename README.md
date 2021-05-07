@@ -16,8 +16,103 @@
 ### :mage: 맴버구성
 + :lipstick: Frontend - React
   + 정찬엽
-     + JWT - 특정 api 권한 인증 및 Refresh Token 개발
      + 다수 비동기 작업 처리. async,await 사용
+     ``` Javascript
+      const addMovieCollectionAPI = (mid = null) => {
+        return async function (dispatch, getState, { history }) {
+          let access_token = localStorage.getItem("token");
+          let refresh_token = localStorage.getItem('refresh_token');
+          const api = `http://13.209.47.134/api/collections/authentication/${mid}`;
+
+          if (!access_token) {
+            alert('로그인을 먼저 해주세요!');
+            return;
+          }
+
+          if(!mid) {
+            alert('잘못된 접근입니다.');
+            return;
+          }
+
+          /* 서버 요청 */
+          const response = await fetch(api, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token': `${access_token}`,
+              }
+            })
+            .then(res => res.json())
+            .catch(err => console.log(err, "addMovieCollection"));
+
+          if(response.status !== undefined) {
+            // 401 권한없음
+            if(response.status === 401) {
+              alert('재로그인이 필요합니다.');
+              dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+              return;
+            } else {
+              // 500 서버 에러
+              alert('유효하지 않은 접근입니다.');
+              return;
+            }
+          }
+          
+          /* 만약 토큰이 만료되면 다시 요청해서 새로운 토큰 발급 */
+          if(response.msg.includes('만료')) {
+              const reToken = await fetch(api, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json',
+                      'Access-Token':`${access_token}`,
+                      'Refresh-Token':`${refresh_token}`,
+                    }
+                  })
+                  .then((res) => {
+                    if(res.status === 200) {
+                      access_token = res.headers.get("Access-Token");
+                      refresh_token = res.headers.get("Refresh-Token");
+              
+                      // 새 토큰으로 local storage에 저장
+                      localStorage.setItem('token', access_token);
+                      localStorage.setItem('refresh_token', refresh_token);
+                    } 
+                  })
+                  .catch(err => console.log(err, "addMovieCollection"));
+
+              /* 새로받은 토큰으로 다시 서버 요청 */
+              const new_request = await fetch(api, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json',
+                      'Access-Token':`${access_token}`,
+                    }
+                  })
+                  .then(res => res.json())
+                  .catch(err => console.log(err, "addMovieCollection"));
+
+              if(new_request.status !== undefined) {
+                // 401 권한없음
+                if(new_request.status === 401) {
+                  alert('재로그인이 필요합니다.');
+                  dispatch(userActions.logout('/login')); // 토큰 삭제 후 로그인 페이지로 이동
+                  return;
+                } else {
+                  // 500 서버 에러
+                  alert('유효하지 않은 접근입니다.');
+                  return;
+                }
+              }
+              alert(new_request.msg); // 영화 리스트 등록 성공
+          } else {
+              alert(response.msg); // 영화 리스트 등록 성공
+          }
+        }
+      };
+     ```
      + 영화 댓글 작성 및 페이징 기능 개발
      + Carousel 개발
      + 무한 스크롤 (검색 결과 페이지) 개발
