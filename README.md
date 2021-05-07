@@ -114,12 +114,12 @@
       };
      ```
      + 영화 댓글 작성 및 페이징 기능 개발
-     <img width="700px" alt="영화 댓글 페이징" src="./src/media/comment.gif">
+     <img width="700px" alt="영화 댓글 페이징" src="./src/media/comment.gif" />
      + Carousel 개발
-     <img width="700px" alt="슬라이더" src="./src/media/image.gif">
+     <img width="700px" alt="슬라이더" src="./src/media/image.gif" />
      + 무한 스크롤 (검색 결과 페이지) 개발
        + Throttle 응용
-       <img width="700px" alt="무한 스크롤" src="./src/media/scroll.gif">
+       <img width="700px" alt="무한 스크롤" src="./src/media/scroll.gif" />
      + Frontend DevOps 관리 (Git, AWS S3, Router 53)
   + 정성목
      + 로그인(JWT)/회원가입 기능 개발
