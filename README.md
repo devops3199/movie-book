@@ -22,7 +22,7 @@
         return async function (dispatch, getState, { history }) {
           let access_token = localStorage.getItem("token");
           let refresh_token = localStorage.getItem('refresh_token');
-          const api = `http://13.209.47.134/api/collections/authentication/${mid}`;
+          const api = `http://xx.xxx.xx.xxx/api/collections/authentication/${mid}`;
 
           if (!access_token) {
             alert('로그인을 먼저 해주세요!');
@@ -114,6 +114,7 @@
       };
      ```
      + 영화 댓글 작성 및 페이징 기능 개발
+     
      + Carousel 개발
      + 무한 스크롤 (검색 결과 페이지) 개발
        + Throttle 응용
